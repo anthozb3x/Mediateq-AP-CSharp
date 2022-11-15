@@ -20,6 +20,7 @@ namespace Mediateq_AP_SIO2
         static List<Descripteur> lesDescripteurs;
         static List<Revue> lesTitres;
         static List<Livre> lesLivres;
+        static List<Dvd> lesDvd;
 
         #endregion
 
@@ -174,5 +175,131 @@ namespace Mediateq_AP_SIO2
         }
         #endregion
 
+
+        #region DVD
+        //-----------------------------------------------------------
+        // ONGLET "Ajouter DVD" 
+        //-----
+        private void tabDVD_Enter(object sender, EventArgs e)
+        {
+            lesDvd = DAODocuments.getAllDvd();
+            
+            //clear du tableu et de la combo box 
+            dtDvd.Rows.Clear();
+            
+            
+
+            //affichage des dvd dans le tableau 
+            foreach (Dvd dvd in lesDvd)
+            {
+                //ajoute au tableau tout les dvd
+                dtDvd.Rows.Add(dvd.Synopsis, dvd.Ralisateur, dvd.Duree, dvd.Titre, dvd.Image, dvd.LaCategorie.Libelle);
+                //ajoute a la comboxbox de modif/supp tout les dvd
+
+                
+            }
+      
+            //mets du text a la combobox de modif/supp dvd
+            cbChoixDvd.DataSource = lesDvd;
+            cbChoixDvd.DisplayMember = "titre";
+            cbChoixDvd.Text = "choisir un DVD";
+
+            // afficher les categories dans la liste deroulante
+            lesCategories = DAODocuments.getAllCategories();
+            cbCategorieDvd.Text = "chosir un catégorie";
+            cbCategorieDvd.DataSource = lesCategories;
+            cbCategorieDvd.DisplayMember = "Libelle";
+
+            //afficher les categories dans la combobox modif/supp DVD
+            cbCategoDvdModifSupp.DataSource = lesCategories;
+            cbCategoDvdModifSupp.DisplayMember = "libelle";
+  
+            
+        }
+
+
+        // ajouter un DVD
+        private void btAjouterDvd_Click(object sender, EventArgs e) 
+        {
+
+            //declaration des variables du form ajouter dvd
+            string idDvd = txIddvd.Text;
+            string TitreDvd = txTitreDvd.Text;
+            string SysnopsisDvd = txSynopsisDvd.Text;
+            string nomReaDvd = txNomReaDvd.Text;
+            int dureeDvd = Int32.Parse(txDureeDvd.Text);
+            string imageDvd = txImageDvd.Text;
+
+            //création de l'objer catégorie en fonction de la categorie choisi dans la combobox
+            Categorie categodvd =(Categorie)cbCategorieDvd.SelectedItem;
+            
+            //création du dvd
+            Dvd dvd = new Dvd(idDvd, TitreDvd, SysnopsisDvd, nomReaDvd, dureeDvd, imageDvd,categodvd);
+
+            //insert du dvd dabs la bdd
+            DAODocuments.insertDvd(dvd);
+
+            //recuper la liste avec le nouveau dvd
+            lesDvd = DAODocuments.getAllDvd();
+
+            //clear du tableau qui affiche les dvd
+            dtDvd.Rows.Clear();
+
+
+            foreach (Dvd unDVD in lesDvd)
+            {
+                dtDvd.Rows.Add(unDVD.Synopsis, unDVD.Ralisateur, unDVD.Duree, unDVD.Titre, unDVD.Image, unDVD.LaCategorie.Libelle);
+             
+            }
+
+            // afficher tout les dvd avec celui qu'on a ajouter
+            //clear de la combo box de ajouter/supp dvd
+            cbChoixDvd.DataBindings.Clear();
+            cbChoixDvd.DataSource = lesDvd;
+            cbChoixDvd.DisplayMember = "titre";
+
+        }
+
+        //modifier un DVD 
+        private void cbChoixDvd_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Dvd dvdSelectionner = (Dvd)cbChoixDvd.SelectedItem;
+            
+
+            foreach(Dvd unDvd in lesDvd)
+            {
+                if(unDvd.IdDoc == dvdSelectionner.IdDoc)
+                {
+                    int durreDvd = unDvd.Duree;
+                    tbIdDvdModifSupp.Text= unDvd.IdDoc;
+                    tbTitreDvdModifSupp.Text = unDvd.Titre;
+                    tbSynopsisDvdModifSupp.Text = unDvd.Synopsis;
+                    tbNomReaDvdModifSupp.Text = unDvd.Ralisateur;
+                    tbDureeDvdModifSupp.Text = durreDvd.ToString();
+                    tbImageDvdModifSupp.Text = unDvd.Image;
+                    cbCategoDvdModifSupp.Text = unDvd.LaCategorie.Libelle;
+
+                    
+                   
+                }
+            }
+
+
+        }
+        private void btnModifierDVD_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        private void dtDvd_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void gbEditionSuppDVD_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

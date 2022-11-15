@@ -49,9 +49,9 @@ namespace Mediateq_AP_SIO2
         public static List<Livre> getAllLivres()
         {
             List<Livre> lesLivres = new List<Livre>();
-            string req = "Select l.id, l.ISBN, l.auteur, d.titre, d.image, l.collection, d.idPublic, c.libelle from livre l ";
+            string req = "Select l.id, l.ISBN, l.auteur, d.titre, d.image, l.collection, d.idCategorie, c.libelle from livre l ";
             req += " join document d on l.id=d.id";
-            req += " join categorie c on d.idPublic = c.id";
+            req += " join categorie c on d.idCategorie = c.id";
 
             DAOFactory.connecter();
 
@@ -95,7 +95,7 @@ namespace Mediateq_AP_SIO2
         public static Categorie getCategorieByLivre(Livre pLivre)
         {
             Categorie categorie;
-            string req = "Select c.id,c.libelle from categorie c,document d where c.id = d.idPublic and d.id='";
+            string req = "Select c.id,c.libelle from categorie c,document d where c.id = d.idCategorie and d.id='";
             req += pLivre.IdDoc + "'";
 
             DAOFactory.connecter();
@@ -112,6 +112,62 @@ namespace Mediateq_AP_SIO2
             }
             DAOFactory.deconnecter();
             return categorie;
+        }
+
+
+        //renvoie une list de tout les dvd
+        public static List<Dvd> getAllDvd()
+        {
+            List<Dvd> lesDvd = new List<Dvd>();
+
+            try
+            {
+                string req = "Select dvd.id, dvd.synopsis, dvd.réalisateur, dvd.duree, document.titre, document.image,categorie.id, categorie.libelle from dvd join document on dvd.id=document.id JOIN categorie ON document.idCategorie = categorie.id";
+
+                DAOFactory.connecter();
+
+                MySqlDataReader reader = DAOFactory.execSQLRead(req);
+                
+
+                while (reader.Read())
+                {
+                    Categorie cate = new Categorie(reader[6].ToString(), reader[7].ToString());
+                    // On ne renseigne pas le genre et la catégorie car on ne peut pas ouvrir 2 dataReader dans la même connexion
+                    Dvd dvd = new Dvd(reader[0].ToString(), reader[4].ToString(), reader[1].ToString(),
+                        reader[2].ToString(), int.Parse(reader[3].ToString()), reader[5].ToString(),cate);
+                    lesDvd.Add(dvd);
+                }
+                DAOFactory.deconnecter();
+
+
+            }
+
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+
+            return lesDvd;
+
+        }
+
+        
+
+        public static void insertDvd(Dvd dvd)
+        {
+            string req2 = "INSERT INTO document(id, titre, image, idCategorie) VALUES ('" + dvd.IdDoc + "','" + dvd.Titre + "','" + dvd.Image + "','"+ dvd.LaCategorie.Id+"')";
+            string req = "INSERT INTO dvd(id, synopsis, réalisateur,duree) VALUES ('" + dvd.IdDoc + "','" + dvd.Synopsis + "','" + dvd.Ralisateur + "','" + dvd.Duree + "')";
+
+
+
+            DAOFactory.connecter();
+
+            DAOFactory.execSQLWrite(req2);
+            DAOFactory.execSQLWrite(req);
+
+
+
+            DAOFactory.deconnecter();
         }
 
     }
