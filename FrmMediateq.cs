@@ -17,6 +17,7 @@ namespace Mediateq_AP_SIO2
         #region Variables globales
 
         static List<Categorie> lesCategories;
+        static List<Categorie> lesCategoriesModif;
         static List<Descripteur> lesDescripteurs;
         static List<Revue> lesTitres;
         static List<Livre> lesLivres;
@@ -117,7 +118,7 @@ namespace Mediateq_AP_SIO2
             lesCategories = DAODocuments.getAllCategories();
             lesDescripteurs = DAODocuments.getAllDescripteurs();
             lesLivres = DAODocuments.getAllLivres();
-            //DAODocuments.setDescripteurs(lesLivres);
+            //DAODocuments.setDescripteurs(lesLivres)
         }
    
         private void btnRechercher_Click(object sender, EventArgs e)
@@ -173,6 +174,101 @@ namespace Mediateq_AP_SIO2
                 }
             }
         }
+
+        // CRUD LIVRE
+        private void tabLivresCrud_Enter(object sender, EventArgs e)
+        {
+            lesCategories = DAODocuments.getAllCategories();
+            lesLivres = DAODocuments.getAllLivres();
+
+
+            dtLivre.Rows.Clear();
+            //affichage des dvd dans le tableau 
+            foreach (Livre unLivre in lesLivres)
+            {
+                //ajoute au tableau tout les livres
+                dtLivre.Rows.Add(unLivre.Titre,unLivre.ISBN1,unLivre.Auteur,unLivre.LaCollection,unLivre.Image,unLivre.LaCategorie.Libelle);
+              
+
+            }
+
+            cbCHoixLivreEditSupp.DataSource = lesLivres;
+            cbCHoixLivreEditSupp.DisplayMember = "titre";
+
+            
+            lesCategories = DAODocuments.getAllCategories();
+            cbCategoLivre.Text = "chosir un catégorie";
+            cbCategoLivre.DataSource = lesCategories;
+            cbCategoLivre.DisplayMember = "Libelle";
+
+            lesCategoriesModif = DAODocuments.getAllCategories();
+            cbategoLivreEditSupp.DataSource = lesCategoriesModif;
+            cbategoLivreEditSupp.DisplayMember = "libelle";
+
+            
+
+
+        }
+
+        private void btnAjouterLivre_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                //declaration des variables du form ajouter dvd
+                string idLivre = txIdLivre.Text;
+                string titreLivre = txTitreLivre.Text;
+                string ISBNLivre = txIsbnLivre.Text;
+                string nomAuteurLivre = txAuteurLivre.Text;
+                string collectionLivre = txCollectionLivre.Text;
+                string imageLivre = txImageLivre.Text;
+                //création de l'objer catégorie en fonction de la categorie choisi dans la combobox
+                Categorie categoLivre = (Categorie)cbCategoLivre.SelectedItem;
+
+
+                if (livreExsiteInCollection(txIdLivre.Text) == true)
+                {
+                    string message = "cette id exite deja";
+                    const string caption = "attention";
+                    var result = MessageBox.Show(message, caption,
+                                                 MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Warning);
+
+                }
+                else
+                {
+                    //création du Livre
+                    Livre livre = new Livre(idLivre, titreLivre, ISBNLivre, nomAuteurLivre, collectionLivre, imageLivre, categoLivre);
+
+                    //insert du dvd dabs la bdd
+                    DAODocuments.insertLivre(livre);
+
+                    lesLivres = DAODocuments.getAllLivres();
+                    //clear du tableau qui affiche les dvd
+                    dtLivre.Rows.Clear();
+                    //affichage des dvd dans le tableau 
+                    foreach (Livre unLivre in lesLivres)
+                    {
+                        //ajoute au tableau tout les livres
+                        dtLivre.Rows.Add(unLivre.Titre, unLivre.ISBN1, unLivre.Auteur, unLivre.LaCollection, unLivre.Image, unLivre.LaCategorie.Libelle);
+
+
+                    }
+
+                    miseAjour();
+
+                }
+
+
+
+
+            }
+            catch (Exception exc)
+            {
+
+
+            }
+        }
         #endregion
 
 
@@ -198,7 +294,11 @@ namespace Mediateq_AP_SIO2
 
                 
             }
-      
+
+            //verifie si il existe des dvd
+            existeDesDVD();
+
+                  
             //mets du text a la combobox de modif/supp dvd
             cbChoixDvd.DataSource = lesDvd;
             cbChoixDvd.DisplayMember = "titre";
@@ -211,56 +311,88 @@ namespace Mediateq_AP_SIO2
             cbCategorieDvd.DisplayMember = "Libelle";
 
             //afficher les categories dans la combobox modif/supp DVD
-            cbCategoDvdModifSupp.DataSource = lesCategories;
+            lesCategoriesModif = DAODocuments.getAllCategories();
+            cbCategoDvdModifSupp.DataSource = lesCategoriesModif;
             cbCategoDvdModifSupp.DisplayMember = "libelle";
   
             
         }
 
 
-        // ajouter un DVD
+        //-----------------------------------------------------------
+        // ONGLET " btn Ajouter DVD" 
+        //-----
         private void btAjouterDvd_Click(object sender, EventArgs e) 
         {
 
-            //declaration des variables du form ajouter dvd
-            string idDvd = txIddvd.Text;
-            string TitreDvd = txTitreDvd.Text;
-            string SysnopsisDvd = txSynopsisDvd.Text;
-            string nomReaDvd = txNomReaDvd.Text;
-            int dureeDvd = Int32.Parse(txDureeDvd.Text);
-            string imageDvd = txImageDvd.Text;
-
-            //création de l'objer catégorie en fonction de la categorie choisi dans la combobox
-            Categorie categodvd =(Categorie)cbCategorieDvd.SelectedItem;
-            
-            //création du dvd
-            Dvd dvd = new Dvd(idDvd, TitreDvd, SysnopsisDvd, nomReaDvd, dureeDvd, imageDvd,categodvd);
-
-            //insert du dvd dabs la bdd
-            DAODocuments.insertDvd(dvd);
-
-            //recuper la liste avec le nouveau dvd
-            lesDvd = DAODocuments.getAllDvd();
-
-            //clear du tableau qui affiche les dvd
-            dtDvd.Rows.Clear();
-
-
-            foreach (Dvd unDVD in lesDvd)
+            try
             {
-                dtDvd.Rows.Add(unDVD.Synopsis, unDVD.Ralisateur, unDVD.Duree, unDVD.Titre, unDVD.Image, unDVD.LaCategorie.Libelle);
-             
-            }
+                
+                //declaration des variables du form ajouter dvd
+                string idDvd = txIddvd.Text;
+                string TitreDvd = txTitreDvd.Text;
+                string SysnopsisDvd = txSynopsisDvd.Text;
+                string nomReaDvd = txNomReaDvd.Text;
+                int dureeDvd = Int32.Parse(txDureeDvd.Text);
+                string imageDvd = txImageDvd.Text;
 
-            // afficher tout les dvd avec celui qu'on a ajouter
-            //clear de la combo box de ajouter/supp dvd
-            cbChoixDvd.DataBindings.Clear();
-            cbChoixDvd.DataSource = lesDvd;
-            cbChoixDvd.DisplayMember = "titre";
+ 
+                if (dvdExsiteInCollection(txIddvd.Text) == true)
+                {
+                    string message = "cette id exite deja";
+                    const string caption = "attention";
+                    var result = MessageBox.Show(message, caption,
+                                                 MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Warning);
+
+                }
+                else
+                {
+                    //création de l'objer catégorie en fonction de la categorie choisi dans la combobox
+                    Categorie categodvd = (Categorie)cbCategorieDvd.SelectedItem;
+
+                    //création du dvd
+                    Dvd dvd = new Dvd(idDvd, TitreDvd, SysnopsisDvd, nomReaDvd, dureeDvd, imageDvd, categodvd);
+
+                    //insert du dvd dabs la bdd
+                    DAODocuments.insertDvd(dvd);
+
+                    //recuper la liste avec le nouveau dvd
+                    lesDvd = DAODocuments.getAllDvd();
+
+                    //clear du tableau qui affiche les dvd
+                    dtDvd.Rows.Clear();
+
+
+                    foreach (Dvd unDVD in lesDvd)
+                    {
+                        dtDvd.Rows.Add(unDVD.Synopsis, unDVD.Ralisateur, unDVD.Duree, unDVD.Titre, unDVD.Image, unDVD.LaCategorie.Libelle);
+
+                    }
+
+                    miseAjour();
+
+                    existeDesDVD();
+
+
+                }
+
+
+
+
+            }
+            catch(Exception exc)
+            {
+
+                
+            }
+            
 
         }
 
-        //modifier un DVD 
+        //-----------------------------------------------------------
+        // mofifier un dvd
+        //-----
         private void cbChoixDvd_SelectedIndexChanged(object sender, EventArgs e)
         {
             Dvd dvdSelectionner = (Dvd)cbChoixDvd.SelectedItem;
@@ -278,19 +410,211 @@ namespace Mediateq_AP_SIO2
                     tbDureeDvdModifSupp.Text = durreDvd.ToString();
                     tbImageDvdModifSupp.Text = unDvd.Image;
                     cbCategoDvdModifSupp.Text = unDvd.LaCategorie.Libelle;
-
-                    
                    
                 }
             }
 
 
         }
+
+        //btn modifier un dvd
         private void btnModifierDVD_Click(object sender, EventArgs e)
         {
 
+            Dvd dvdSelectionner = (Dvd)cbChoixDvd.SelectedItem;
+
+            //Waring qui permet de demander si on veut vraiment modifier le dvd
+            string message ="etes vous sur de vouloir modifier le DVD "+dvdSelectionner.Titre+ " ?";
+            const string caption = "vérification";
+            var result = MessageBox.Show(message, caption,
+                                         MessageBoxButtons.YesNo,
+                                         MessageBoxIcon.Question);
+
+            if(result==DialogResult.Yes)
+            {
+                //creéation des variables avec contenue saisi des tx box
+                string idDvdModifSupp = tbIdDvdModifSupp.Text;
+                string titreDvdModifSupp = tbTitreDvdModifSupp.Text;
+                string synopsisDvdModifSupp = tbSynopsisDvdModifSupp.Text;
+                string nomReaDvdModifSupp = tbNomReaDvdModifSupp.Text;
+                int dureeDvdModifSupp = Int32.Parse(tbDureeDvdModifSupp.Text);
+                string imageDvdModifSupp = tbImageDvdModifSupp.Text;
+                Categorie categodvdModifSupp = (Categorie)cbCategoDvdModifSupp.SelectedItem;
+
+                //création du dvd
+                Dvd dvd = new Dvd(idDvdModifSupp, titreDvdModifSupp, synopsisDvdModifSupp, nomReaDvdModifSupp, dureeDvdModifSupp, imageDvdModifSupp, categodvdModifSupp);
+
+                //appel de la fonction modifierDVD qui permet de modifier le dvd passer en parametre
+                DAODocuments.ModifierDvd(dvd);
+
+                //actualisation de la liste lesDvd
+                lesDvd = DAODocuments.getAllDvd();
+
+                //clear du tableau qui affiche les dvd
+                dtDvd.Rows.Clear();
+
+                //Affichage du tableau a jour
+                foreach (Dvd unDVD in lesDvd)
+                {
+                    dtDvd.Rows.Add(unDVD.Synopsis, unDVD.Ralisateur, unDVD.Duree, unDVD.Titre, unDVD.Image, unDVD.LaCategorie.Libelle);
+
+                }
+
+
+                miseAjour();
+
+            }
+        }
+        
+
+
+        //-----------------------------------------------------------
+        // supprimer un dvd
+        //-----
+        private void btnSuppDVD_Click(object sender, EventArgs e)
+        {
+            Dvd dvdSelectionner = (Dvd)cbChoixDvd.SelectedItem;
+
+            //Waring qui permet de demander si on veut vraiment modifier le dvd
+            string message = "êtes vous sur de supprimer le dvd " + dvdSelectionner.Titre + " ?";
+            const string caption = "vérification";
+            var result = MessageBox.Show(message, caption,
+                                         MessageBoxButtons.YesNo,
+                                         MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                //creéation des variables avec contenue saisi des tx box
+                string idDvdModifSupp = tbIdDvdModifSupp.Text;
+                string titreDvdModifSupp = tbTitreDvdModifSupp.Text;
+                string synopsisDvdModifSupp = tbSynopsisDvdModifSupp.Text;
+                string nomReaDvdModifSupp = tbNomReaDvdModifSupp.Text;
+                int dureeDvdModifSupp = Int32.Parse(tbDureeDvdModifSupp.Text);
+                string imageDvdModifSupp = tbImageDvdModifSupp.Text;
+                Categorie categodvdModifSupp = (Categorie)cbCategoDvdModifSupp.SelectedItem;
+
+                //création du dvd
+                Dvd dvd = new Dvd(idDvdModifSupp, titreDvdModifSupp, synopsisDvdModifSupp, nomReaDvdModifSupp, dureeDvdModifSupp, imageDvdModifSupp, categodvdModifSupp);
+
+                //appel de la fonction modifierDVD qui permet de modifier le dvd passer en parametre
+                DAODocuments.SupprimerDvd(dvd);
+
+                //actualisation de la liste lesDvd
+                lesDvd = DAODocuments.getAllDvd();
+
+                //clear du tableau qui affiche les dvd
+                dtDvd.Rows.Clear();
+
+                //Affichage du tableau a jour
+                foreach (Dvd unDVD in lesDvd)
+                {
+                    dtDvd.Rows.Add(unDVD.Synopsis, unDVD.Ralisateur, unDVD.Duree, unDVD.Titre, unDVD.Image, unDVD.LaCategorie.Libelle);
+
+                }
+
+                miseAjour();
+
+                //verifie si il existe des dvd
+                existeDesDVD();
+
+            }
+
         }
         #endregion
+
+        //reset des txbox et mise a jour des combo box 
+        public void miseAjour()
+        {
+
+            /**
+             * Clear et mise a jour des Livre 
+             * **/
+
+            txIdLivre.Text = ""; 
+            txTitreLivre.Text = ""; 
+            txIsbnLivre.Text = ""; 
+            txAuteurLivre.Text = ""; 
+            txCollectionLivre.Text = ""; 
+            txImageLivre.Text = "";
+            cbCategoLivre.Text = "chosir un categorie";
+
+
+
+            /**
+             * Clear et mise a jour des dvd 
+             * **/
+            //clear de la combo box de ajouter/supp dvd
+            cbChoixDvd.DataBindings.Clear();
+            // afficher tout les dvd avec celui qu'on a ajouter
+            cbChoixDvd.DataSource = lesDvd;
+            cbChoixDvd.DisplayMember = "titre";
+
+            //clear des text box ajouter DVD
+            txIddvd.Text = "";
+            txTitreDvd.Text = "";
+            txSynopsisDvd.Text = "";
+            txNomReaDvd.Text = "";
+            txDureeDvd.Text = "";
+            txImageDvd.Text = "";
+
+            //clear des text box modifier DVD
+            tbIdDvdModifSupp.Text = "";
+            tbTitreDvdModifSupp.Text = "";
+            tbSynopsisDvdModifSupp.Text = "";
+            tbNomReaDvdModifSupp.Text = "";
+            tbDureeDvdModifSupp.Text = "";
+            tbImageDvdModifSupp.Text = "";
+            cbCategoDvdModifSupp.Text = "chosir un categorie";
+            cbChoixDvd.Text = "chosir un dvd";
+        }
+
+        //mets le bouton griser de modif et supp si il existe pas de dvd
+        public void existeDesDVD()
+        {
+            if (lesDvd.Count() == 0)
+            {
+                btnModifierDVD.Enabled = false;
+                btnSuppDVD.Enabled = false;
+            }
+            else
+            {
+                btnModifierDVD.Enabled = true;
+                btnSuppDVD.Enabled = true;
+            }
+        }
+
+
+        // permet de verifier si l'id passer en paramette existe pour undvd 
+        public bool dvdExsiteInCollection(string idDVD)
+        {
+              bool resultat = false;
+            foreach (Dvd unDVD in lesDvd)
+            {
+                if (unDVD.IdDoc == idDVD)
+                {
+                    resultat = true;
+                }
+                
+
+            }
+            return resultat;
+        }
+
+        public bool livreExsiteInCollection(string idLivre)
+        {
+            bool resultat = false;
+            foreach (Livre unLivre in lesLivres)
+            {
+                if (unLivre.IdDoc == idLivre)
+                {
+                    resultat = true;
+                }
+
+
+            }
+            return resultat;
+        }
+
 
         private void dtDvd_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -301,5 +625,7 @@ namespace Mediateq_AP_SIO2
         {
 
         }
+
+
     }
 }
