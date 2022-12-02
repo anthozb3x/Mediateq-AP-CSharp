@@ -175,7 +175,31 @@ namespace Mediateq_AP_SIO2
 
 
         }
+        //Modifier un livre
+        public static void ModifierLivre(Livre livre)
+        {
 
+            try
+            {
+
+                string req2 = "UPDATE document SET id = '" + livre.IdDoc + "', titre='" + livre.Titre + "',image= '" + livre.Image + "',idCategorie='" + livre.LaCategorie.Id + "' WHERE id = '" + livre.IdDoc + "'";
+                string req = "UPDATE livre SET id='" + livre.IdDoc + "', ISBN='" + livre.ISBN1 + "', auteur='" + livre.Auteur + "',collection='" + livre.LaCollection + "' WHERE id= '" + livre.IdDoc + "'";
+
+                DAOFactory.connecter();
+
+                DAOFactory.execSQLWrite(req2);
+                DAOFactory.execSQLWrite(req);
+
+                DAOFactory.deconnecter();
+
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+
+
+        }
 
         //inserer un dvd dans la bdd
         public static void insertDvd(Dvd dvd)
@@ -190,6 +214,32 @@ namespace Mediateq_AP_SIO2
 
                 DAOFactory.execSQLWrite(req2);
                 DAOFactory.execSQLWrite(req);
+
+                DAOFactory.deconnecter();
+
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+
+
+        }
+        //suprimmer un livre
+        public static void SupprimerLivre(Livre livre)
+        {
+
+            try
+            {
+                string req = "DELETE FROM livre WHERE id='" + livre.IdDoc + "'";
+                string req2 = "DELETE FROM document WHERE id ='" + livre.IdDoc + "'";
+
+
+                DAOFactory.connecter();
+
+
+                DAOFactory.execSQLWrite(req);
+                DAOFactory.execSQLWrite(req2);
 
                 DAOFactory.deconnecter();
 

@@ -201,6 +201,7 @@ namespace Mediateq_AP_SIO2
             cbCategoLivre.DataSource = lesCategories;
             cbCategoLivre.DisplayMember = "Libelle";
 
+            // cbbox catego modif/supp
             lesCategoriesModif = DAODocuments.getAllCategories();
             cbategoLivreEditSupp.DataSource = lesCategoriesModif;
             cbategoLivreEditSupp.DisplayMember = "libelle";
@@ -210,6 +211,8 @@ namespace Mediateq_AP_SIO2
 
         }
 
+
+        // ajouter livre btn
         private void btnAjouterLivre_Click(object sender, EventArgs e)
         {
             try
@@ -269,6 +272,124 @@ namespace Mediateq_AP_SIO2
 
             }
         }
+
+
+        //modifier livre
+        private void cbCHoixLivreEditSupp_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Livre unLivre = (Livre)cbCHoixLivreEditSupp.SelectedItem;
+
+            txIdLivreEditSupp.Text  = unLivre.IdDoc;
+            txtTitreLivreEditSupp.Text   = unLivre.Titre;
+            txISBNLivreEditSupp.Text = unLivre.ISBN1;
+            txAuteurLivreEditSupp.Text = unLivre.Auteur;
+            txCollectionLivreEditSupp.Text = unLivre.LaCollection;
+            txImageLivreEditSupp.Text= unLivre.Image;
+            cbategoLivreEditSupp.Text = unLivre.LaCategorie.Libelle;            
+
+        }
+
+        private void btnLivreEditModif_Click(object sender, EventArgs e)
+        {
+
+            Livre Livre = (Livre)cbCHoixLivreEditSupp.SelectedItem;
+
+            //Waring qui permet de demander si on veut vraiment modifier le dvd
+            string message = "etes vous sur de vouloir modifier le Livre " + Livre.Titre + " ?";
+            const string caption = "vérification";
+            var result = MessageBox.Show(message, caption,
+                                         MessageBoxButtons.YesNo,
+                                         MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                //creéation des variables avec contenue saisi des tx box
+                string idLivreModifSupp = txIdLivreEditSupp.Text;
+                string titreLivreModifSupp = txtTitreLivreEditSupp.Text;
+                string ISBNLivreModifSupp = txISBNLivreEditSupp.Text;
+                string nomAuteurLivreModifSupp = txAuteurLivreEditSupp.Text;
+                string collectionLivreModifSupp = txCollectionLivreEditSupp.Text;
+                string imageLivreModifSupp = txImageLivreEditSupp.Text;
+                Categorie categodLivreModifSupp = (Categorie)cbategoLivreEditSupp.SelectedItem;
+
+                //création du dvd
+                Livre livre = new Livre(idLivreModifSupp, titreLivreModifSupp, ISBNLivreModifSupp, nomAuteurLivreModifSupp, collectionLivreModifSupp, imageLivreModifSupp, categodLivreModifSupp);
+
+                //appel de la fonction modifierDVD qui permet de modifier le dvd passer en parametre
+                DAODocuments.ModifierLivre(livre);
+
+                //actualisation de la liste lesDvd
+                lesLivres = DAODocuments.getAllLivres();
+
+                //clear du tableau qui affiche les dvd
+                dtLivre.Rows.Clear();
+                //affichage des dvd dans le tableau 
+                foreach (Livre unLivre in lesLivres)
+                {
+                    //ajoute au tableau tout les livres
+                    dtLivre.Rows.Add(unLivre.Titre, unLivre.ISBN1, unLivre.Auteur, unLivre.LaCollection, unLivre.Image, unLivre.LaCategorie.Libelle);
+
+
+                }
+
+
+                miseAjour();
+
+            }
+
+        }
+       
+        //suprimer live
+        private void btnSuppLivre_Click(object sender, EventArgs e)
+        {
+            Livre Livre = (Livre)cbCHoixLivreEditSupp.SelectedItem;
+
+            //Waring qui permet de demander si on veut vraiment modifier le dvd
+            string message = "etes vous sur de vouloir supprimer le Livre " + Livre.Titre + " ?";
+            const string caption = "vérification";
+            var result = MessageBox.Show(message, caption,
+                                         MessageBoxButtons.YesNo,
+                                         MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                //creéation des variables avec contenue saisi des tx box
+                string idLivreModifSupp = txIdLivreEditSupp.Text;
+                string titreLivreModifSupp = txtTitreLivreEditSupp.Text;
+                string ISBNLivreModifSupp = txISBNLivreEditSupp.Text;
+                string nomAuteurLivreModifSupp = txAuteurLivreEditSupp.Text;
+                string collectionLivreModifSupp = txCollectionLivreEditSupp.Text;
+                string imageLivreModifSupp = txImageLivreEditSupp.Text;
+                Categorie categodLivreModifSupp = (Categorie)cbategoLivreEditSupp.SelectedItem;
+
+                //création du dvd
+                Livre livre = new Livre(idLivreModifSupp, titreLivreModifSupp, ISBNLivreModifSupp, nomAuteurLivreModifSupp, collectionLivreModifSupp, imageLivreModifSupp, categodLivreModifSupp);
+
+                //appel de la fonction modifierDVD qui permet de modifier le dvd passer en parametre
+                DAODocuments.SupprimerLivre(livre);
+
+                //actualisation de la liste lesDvd
+                lesLivres = DAODocuments.getAllLivres();
+
+                //clear du tableau qui affiche les dvd
+                dtLivre.Rows.Clear();
+                //affichage des dvd dans le tableau 
+                foreach (Livre unLivre in lesLivres)
+                {
+                    //ajoute au tableau tout les livres
+                    dtLivre.Rows.Add(unLivre.Titre, unLivre.ISBN1, unLivre.Auteur, unLivre.LaCollection, unLivre.Image, unLivre.LaCategorie.Libelle);
+
+
+                }
+
+
+                miseAjour();
+
+            }
+
+
+        }
+
         #endregion
 
 
@@ -398,21 +519,16 @@ namespace Mediateq_AP_SIO2
             Dvd dvdSelectionner = (Dvd)cbChoixDvd.SelectedItem;
             
 
-            foreach(Dvd unDvd in lesDvd)
-            {
-                if(unDvd.IdDoc == dvdSelectionner.IdDoc)
-                {
-                    int durreDvd = unDvd.Duree;
-                    tbIdDvdModifSupp.Text= unDvd.IdDoc;
-                    tbTitreDvdModifSupp.Text = unDvd.Titre;
-                    tbSynopsisDvdModifSupp.Text = unDvd.Synopsis;
-                    tbNomReaDvdModifSupp.Text = unDvd.Ralisateur;
+                    int durreDvd = dvdSelectionner.Duree;
+                    tbIdDvdModifSupp.Text= dvdSelectionner.IdDoc;
+                    tbTitreDvdModifSupp.Text = dvdSelectionner.Titre;
+                    tbSynopsisDvdModifSupp.Text = dvdSelectionner.Synopsis;
+                    tbNomReaDvdModifSupp.Text = dvdSelectionner.Ralisateur;
                     tbDureeDvdModifSupp.Text = durreDvd.ToString();
-                    tbImageDvdModifSupp.Text = unDvd.Image;
-                    cbCategoDvdModifSupp.Text = unDvd.LaCategorie.Libelle;
+                    tbImageDvdModifSupp.Text = dvdSelectionner.Image;
+                    cbCategoDvdModifSupp.Text = dvdSelectionner.LaCategorie.Libelle;
                    
-                }
-            }
+
 
 
         }
@@ -538,6 +654,18 @@ namespace Mediateq_AP_SIO2
             txImageLivre.Text = "";
             cbCategoLivre.Text = "chosir un categorie";
 
+            txIdLivreEditSupp.Text = "";
+            txtTitreLivreEditSupp.Text = "";
+            txISBNLivreEditSupp.Text = "";
+            txAuteurLivreEditSupp.Text = "";
+            txCollectionLivreEditSupp.Text = "";
+            txImageLivreEditSupp.Text = "";
+            cbategoLivreEditSupp.Text = "Choisir une categorie";
+
+           cbCHoixLivreEditSupp.DataBindings.Clear();
+            // afficher tout les dvd avec celui qu'on a ajouter
+            cbCHoixLivreEditSupp.DataSource = lesLivres;
+            cbCHoixLivreEditSupp.DisplayMember = "titre";
 
 
             /**

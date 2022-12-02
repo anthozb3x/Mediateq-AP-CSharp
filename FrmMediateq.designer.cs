@@ -128,7 +128,7 @@ namespace Mediateq_AP_SIO2
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnSuppLivre = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.cbategoLivreEditSupp = new System.Windows.Forms.ComboBox();
             this.txIdLivreEditSupp = new System.Windows.Forms.TextBox();
@@ -143,7 +143,7 @@ namespace Mediateq_AP_SIO2
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.txtTitreLivreEditSupp = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnLivreEditModif = new System.Windows.Forms.Button();
             this.cbCHoixLivreEditSupp = new System.Windows.Forms.ComboBox();
             this.label28 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -1089,7 +1089,7 @@ namespace Mediateq_AP_SIO2
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Controls.Add(this.btnSuppLivre);
             this.groupBox2.Controls.Add(this.label21);
             this.groupBox2.Controls.Add(this.cbategoLivreEditSupp);
             this.groupBox2.Controls.Add(this.txIdLivreEditSupp);
@@ -1104,7 +1104,7 @@ namespace Mediateq_AP_SIO2
             this.groupBox2.Controls.Add(this.label26);
             this.groupBox2.Controls.Add(this.label27);
             this.groupBox2.Controls.Add(this.txtTitreLivreEditSupp);
-            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.btnLivreEditModif);
             this.groupBox2.Controls.Add(this.cbCHoixLivreEditSupp);
             this.groupBox2.Controls.Add(this.label28);
             this.groupBox2.Location = new System.Drawing.Point(334, 6);
@@ -1114,14 +1114,15 @@ namespace Mediateq_AP_SIO2
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Editer / Supprimer un Livre";
             // 
-            // button2
+            // btnSuppLivre
             // 
-            this.button2.Location = new System.Drawing.Point(265, 150);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(141, 23);
-            this.button2.TabIndex = 42;
-            this.button2.Text = "Supprimer le Livre";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnSuppLivre.Location = new System.Drawing.Point(265, 150);
+            this.btnSuppLivre.Name = "btnSuppLivre";
+            this.btnSuppLivre.Size = new System.Drawing.Size(141, 23);
+            this.btnSuppLivre.TabIndex = 42;
+            this.btnSuppLivre.Text = "Supprimer le Livre";
+            this.btnSuppLivre.UseVisualStyleBackColor = true;
+            this.btnSuppLivre.Click += new System.EventHandler(this.btnSuppLivre_Click);
             // 
             // label21
             // 
@@ -1244,14 +1245,15 @@ namespace Mediateq_AP_SIO2
             this.txtTitreLivreEditSupp.Size = new System.Drawing.Size(100, 20);
             this.txtTitreLivreEditSupp.TabIndex = 28;
             // 
-            // button3
+            // btnLivreEditModif
             // 
-            this.button3.Location = new System.Drawing.Point(265, 66);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(141, 23);
-            this.button3.TabIndex = 22;
-            this.button3.Text = "Modifier le Livre";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnLivreEditModif.Location = new System.Drawing.Point(265, 66);
+            this.btnLivreEditModif.Name = "btnLivreEditModif";
+            this.btnLivreEditModif.Size = new System.Drawing.Size(141, 23);
+            this.btnLivreEditModif.TabIndex = 22;
+            this.btnLivreEditModif.Text = "Modifier le Livre";
+            this.btnLivreEditModif.UseVisualStyleBackColor = true;
+            this.btnLivreEditModif.Click += new System.EventHandler(this.btnLivreEditModif_Click);
             // 
             // cbCHoixLivreEditSupp
             // 
@@ -1260,6 +1262,7 @@ namespace Mediateq_AP_SIO2
             this.cbCHoixLivreEditSupp.Name = "cbCHoixLivreEditSupp";
             this.cbCHoixLivreEditSupp.Size = new System.Drawing.Size(99, 21);
             this.cbCHoixLivreEditSupp.TabIndex = 27;
+            this.cbCHoixLivreEditSupp.SelectedIndexChanged += new System.EventHandler(this.cbCHoixLivreEditSupp_SelectedIndexChanged);
             // 
             // label28
             // 
@@ -1565,7 +1568,7 @@ namespace Mediateq_AP_SIO2
         private System.Windows.Forms.TextBox txAuteurLivre;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnSuppLivre;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.ComboBox cbategoLivreEditSupp;
         private System.Windows.Forms.TextBox txIdLivreEditSupp;
@@ -1580,7 +1583,7 @@ namespace Mediateq_AP_SIO2
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox txtTitreLivreEditSupp;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnLivreEditModif;
         private System.Windows.Forms.ComboBox cbCHoixLivreEditSupp;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.DataGridView dtLivre;
