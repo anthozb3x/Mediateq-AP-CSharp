@@ -10,10 +10,10 @@ namespace Mediateq_AP_SIO2.metier
     {
         private string ISBN;
         private string auteur;
-        private string laCollection;
+        private collection laCollection;
 
 
-        public Livre(string unId, string unTitre, string unISBN, string unAuteur, string uneCollection,string uneImage, Categorie uneCategorie) : base(unId, unTitre, uneImage, uneCategorie)
+        public Livre(string unId, string unTitre, string unISBN, string unAuteur, collection uneCollection,string uneImage, Categorie uneCategorie) : base(unId, unTitre, uneImage, uneCategorie)
         {
             ISBN1 = unISBN;
             Auteur = unAuteur;
@@ -22,6 +22,6 @@ namespace Mediateq_AP_SIO2.metier
 
         public string ISBN1 { get => ISBN; set => ISBN = value; }
         public string Auteur { get => auteur; set => auteur = value; }
-        public string LaCollection { get => laCollection; set => laCollection = value; }
+        public collection LaCollection { get => laCollection; set => laCollection = value; }
     }
 }

@@ -28,6 +28,25 @@ namespace Mediateq_AP_SIO2
             return lesCategories;
         }
 
+
+        public static List<collection> getAllCollection()
+        {
+            List<collection> lesCollection= new List<collection>();
+            string req = "Select * from collection";
+
+            DAOFactory.connecter();
+
+            MySqlDataReader reader = DAOFactory.execSQLRead(req);
+
+            while (reader.Read())
+            {
+                collection collection = new collection(reader[0].ToString(), reader[1].ToString());
+                lesCollection.Add(collection);
+            }
+            DAOFactory.deconnecter();
+            return lesCollection;
+        }
+
         public static List<Descripteur> getAllDescripteurs()
         {
             List<Descripteur> lesDescripteurs = new List<Descripteur>();
@@ -49,9 +68,10 @@ namespace Mediateq_AP_SIO2
         public static List<Livre> getAllLivres()
         {
             List<Livre> lesLivres = new List<Livre>();
-            string req = "Select l.id, l.ISBN, l.auteur, d.titre, d.image, l.collection, d.idCategorie, c.libelle from livre l ";
+            string req = "Select l.id, l.ISBN, l.auteur, d.titre, d.image, d.idCategorie, c.libelle, collection.id, collection.libelle from livre l ";
             req += " join document d on l.id=d.id";
             req += " join categorie c on d.idCategorie = c.id";
+            req += " LEFT JOIN collection ON l.id_collection = collection.id";
 
             DAOFactory.connecter();
 
@@ -59,8 +79,9 @@ namespace Mediateq_AP_SIO2
 
             while (reader.Read())
             {
+                
                 Livre livre = new Livre(reader[0].ToString(), reader[3].ToString(), reader[1].ToString(),
-                reader[2].ToString(), reader[5].ToString(), reader[4].ToString(),new Categorie(reader[6].ToString(),reader[7].ToString()));
+                reader[2].ToString(), new collection(reader[7].ToString(),reader[8].ToString()), reader[4].ToString(),new Categorie(reader[5].ToString(),reader[6].ToString()));
   
                 lesLivres.Add(livre);
                 
@@ -158,7 +179,7 @@ namespace Mediateq_AP_SIO2
             try
             {
                 string req2 = "INSERT INTO document(id, titre, image, idCategorie) VALUES ('" + livre.IdDoc + "','" + livre.Titre + "','" + livre.Image + "','" + livre.LaCategorie.Id + "')";
-                string req = "INSERT INTO livre(id, ISBN, auteur,collection) VALUES ('" + livre.IdDoc + "','" + livre.ISBN1 + "','" + livre.Auteur + "','" + livre.LaCollection + "')";
+                string req = "INSERT INTO livre(id, ISBN, auteur,id_collection) VALUES ('" + livre.IdDoc + "','" + livre.ISBN1 + "','" + livre.Auteur + "','" + livre.LaCollection.Id + "')";
 
                 DAOFactory.connecter();
 
@@ -183,7 +204,7 @@ namespace Mediateq_AP_SIO2
             {
 
                 string req2 = "UPDATE document SET id = '" + livre.IdDoc + "', titre='" + livre.Titre + "',image= '" + livre.Image + "',idCategorie='" + livre.LaCategorie.Id + "' WHERE id = '" + livre.IdDoc + "'";
-                string req = "UPDATE livre SET id='" + livre.IdDoc + "', ISBN='" + livre.ISBN1 + "', auteur='" + livre.Auteur + "',collection='" + livre.LaCollection + "' WHERE id= '" + livre.IdDoc + "'";
+                string req = "UPDATE livre SET id='" + livre.IdDoc + "', ISBN='" + livre.ISBN1 + "', auteur='" + livre.Auteur + "',id_collection='" + livre.LaCollection.Id + "' WHERE id= '" + livre.IdDoc + "'";
 
                 DAOFactory.connecter();
 

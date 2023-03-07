@@ -22,6 +22,8 @@ namespace Mediateq_AP_SIO2
         static List<Revue> lesTitres;
         static List<Livre> lesLivres;
         static List<Dvd> lesDvd;
+        static List<collection> lesCollectionsModif;
+        static List<collection> lesCollections;
 
         #endregion
 
@@ -142,7 +144,7 @@ namespace Mediateq_AP_SIO2
                     lblNumero.Text = livre.IdDoc;
                     lblTitre.Text = livre.Titre;
                     lblAuteur.Text = livre.Auteur;
-                    lblCollection.Text = livre.LaCollection;
+                    lblCollection.Text = livre.LaCollection.Libelle;
                     lblISBN.Text = livre.ISBN1;
                     lblImage.Text = livre.Image;
                     lblCategorie.Text = livre.LaCategorie.Libelle;
@@ -170,7 +172,7 @@ namespace Mediateq_AP_SIO2
                 //on teste si le titre du livre contient ce qui a été saisi
                 if (titreMinuscules.Contains(saisieMinuscules))
                 {
-                    dgvLivres.Rows.Add(livre.IdDoc,livre.Titre,livre.Auteur,livre.ISBN1,livre.LaCollection);
+                    dgvLivres.Rows.Add(livre.IdDoc,livre.Titre,livre.Auteur,livre.ISBN1,livre.LaCollection.Libelle);
                 }
             }
         }
@@ -181,13 +183,15 @@ namespace Mediateq_AP_SIO2
             lesCategories = DAODocuments.getAllCategories();
             lesLivres = DAODocuments.getAllLivres();
 
+            lesCollections = DAODocuments.getAllCollection();
+            lesCollectionsModif = DAODocuments.getAllCollection();
 
             dtLivre.Rows.Clear();
             //affichage des dvd dans le tableau 
             foreach (Livre unLivre in lesLivres)
             {
                 //ajoute au tableau tout les livres
-                dtLivre.Rows.Add(unLivre.Titre,unLivre.ISBN1,unLivre.Auteur,unLivre.LaCollection,unLivre.Image,unLivre.LaCategorie.Libelle);
+                dtLivre.Rows.Add(unLivre.Titre,unLivre.ISBN1,unLivre.Auteur,unLivre.LaCollection.Libelle,unLivre.Image,unLivre.LaCategorie.Libelle);
               
 
             }
@@ -200,6 +204,12 @@ namespace Mediateq_AP_SIO2
             cbCategoLivre.Text = "chosir un catégorie";
             cbCategoLivre.DataSource = lesCategories;
             cbCategoLivre.DisplayMember = "Libelle";
+
+            cbCollectionEditSupp.DataSource = lesCollectionsModif;
+            cbCollectionEditSupp.DisplayMember = "libelle";
+
+            cbCollection.DataSource = lesCollections;
+            cbCollection.DisplayMember = "libelle";
 
             // cbbox catego modif/supp
             lesCategoriesModif = DAODocuments.getAllCategories();
@@ -223,10 +233,12 @@ namespace Mediateq_AP_SIO2
                 string titreLivre = txTitreLivre.Text;
                 string ISBNLivre = txIsbnLivre.Text;
                 string nomAuteurLivre = txAuteurLivre.Text;
-                string collectionLivre = txCollectionLivre.Text;
+                
                 string imageLivre = txImageLivre.Text;
                 //création de l'objer catégorie en fonction de la categorie choisi dans la combobox
                 Categorie categoLivre = (Categorie)cbCategoLivre.SelectedItem;
+                collection collection = (collection)cbCollection.SelectedItem;
+
 
 
                 if (livreExsiteInCollection(txIdLivre.Text) == true)
@@ -241,7 +253,7 @@ namespace Mediateq_AP_SIO2
                 else
                 {
                     //création du Livre
-                    Livre livre = new Livre(idLivre, titreLivre, ISBNLivre, nomAuteurLivre, collectionLivre, imageLivre, categoLivre);
+                    Livre livre = new Livre(idLivre, titreLivre, ISBNLivre, nomAuteurLivre, collection, imageLivre, categoLivre);
 
                     //insert du dvd dabs la bdd
                     DAODocuments.insertLivre(livre);
@@ -253,7 +265,7 @@ namespace Mediateq_AP_SIO2
                     foreach (Livre unLivre in lesLivres)
                     {
                         //ajoute au tableau tout les livres
-                        dtLivre.Rows.Add(unLivre.Titre, unLivre.ISBN1, unLivre.Auteur, unLivre.LaCollection, unLivre.Image, unLivre.LaCategorie.Libelle);
+                        dtLivre.Rows.Add(unLivre.Titre, unLivre.ISBN1, unLivre.Auteur, unLivre.LaCollection.Libelle, unLivre.Image, unLivre.LaCategorie.Libelle);
 
 
                     }
@@ -283,7 +295,7 @@ namespace Mediateq_AP_SIO2
             txtTitreLivreEditSupp.Text   = unLivre.Titre;
             txISBNLivreEditSupp.Text = unLivre.ISBN1;
             txAuteurLivreEditSupp.Text = unLivre.Auteur;
-            txCollectionLivreEditSupp.Text = unLivre.LaCollection;
+            cbCollectionEditSupp.Text = unLivre.LaCollection.Libelle;
             txImageLivreEditSupp.Text= unLivre.Image;
             cbategoLivreEditSupp.Text = unLivre.LaCategorie.Libelle;            
 
@@ -308,12 +320,14 @@ namespace Mediateq_AP_SIO2
                 string titreLivreModifSupp = txtTitreLivreEditSupp.Text;
                 string ISBNLivreModifSupp = txISBNLivreEditSupp.Text;
                 string nomAuteurLivreModifSupp = txAuteurLivreEditSupp.Text;
-                string collectionLivreModifSupp = txCollectionLivreEditSupp.Text;
+                
                 string imageLivreModifSupp = txImageLivreEditSupp.Text;
+
                 Categorie categodLivreModifSupp = (Categorie)cbategoLivreEditSupp.SelectedItem;
+                collection collection = (collection)cbCollectionEditSupp.SelectedItem;
 
                 //création du dvd
-                Livre livre = new Livre(idLivreModifSupp, titreLivreModifSupp, ISBNLivreModifSupp, nomAuteurLivreModifSupp, collectionLivreModifSupp, imageLivreModifSupp, categodLivreModifSupp);
+                Livre livre = new Livre(idLivreModifSupp, titreLivreModifSupp, ISBNLivreModifSupp, nomAuteurLivreModifSupp, collection, imageLivreModifSupp, categodLivreModifSupp);
 
                 //appel de la fonction modifierDVD qui permet de modifier le dvd passer en parametre
                 DAODocuments.ModifierLivre(livre);
@@ -327,7 +341,7 @@ namespace Mediateq_AP_SIO2
                 foreach (Livre unLivre in lesLivres)
                 {
                     //ajoute au tableau tout les livres
-                    dtLivre.Rows.Add(unLivre.Titre, unLivre.ISBN1, unLivre.Auteur, unLivre.LaCollection, unLivre.Image, unLivre.LaCategorie.Libelle);
+                    dtLivre.Rows.Add(unLivre.Titre, unLivre.ISBN1, unLivre.Auteur, unLivre.LaCollection.Libelle, unLivre.Image, unLivre.LaCategorie.Libelle);
 
 
                 }
@@ -358,12 +372,13 @@ namespace Mediateq_AP_SIO2
                 string titreLivreModifSupp = txtTitreLivreEditSupp.Text;
                 string ISBNLivreModifSupp = txISBNLivreEditSupp.Text;
                 string nomAuteurLivreModifSupp = txAuteurLivreEditSupp.Text;
-                string collectionLivreModifSupp = txCollectionLivreEditSupp.Text;
+                
                 string imageLivreModifSupp = txImageLivreEditSupp.Text;
                 Categorie categodLivreModifSupp = (Categorie)cbategoLivreEditSupp.SelectedItem;
+                collection collection = (collection)cbCollectionEditSupp.SelectedItem;
 
                 //création du dvd
-                Livre livre = new Livre(idLivreModifSupp, titreLivreModifSupp, ISBNLivreModifSupp, nomAuteurLivreModifSupp, collectionLivreModifSupp, imageLivreModifSupp, categodLivreModifSupp);
+                Livre livre = new Livre(idLivreModifSupp, titreLivreModifSupp, ISBNLivreModifSupp, nomAuteurLivreModifSupp, collection, imageLivreModifSupp, categodLivreModifSupp);
 
                 //appel de la fonction modifierDVD qui permet de modifier le dvd passer en parametre
                 DAODocuments.SupprimerLivre(livre);
@@ -377,7 +392,7 @@ namespace Mediateq_AP_SIO2
                 foreach (Livre unLivre in lesLivres)
                 {
                     //ajoute au tableau tout les livres
-                    dtLivre.Rows.Add(unLivre.Titre, unLivre.ISBN1, unLivre.Auteur, unLivre.LaCollection, unLivre.Image, unLivre.LaCategorie.Libelle);
+                    dtLivre.Rows.Add(unLivre.Titre, unLivre.ISBN1, unLivre.Auteur, unLivre.LaCollection.Libelle, unLivre.Image, unLivre.LaCategorie.Libelle);
 
 
                 }
@@ -650,7 +665,7 @@ namespace Mediateq_AP_SIO2
             txTitreLivre.Text = ""; 
             txIsbnLivre.Text = ""; 
             txAuteurLivre.Text = ""; 
-            txCollectionLivre.Text = ""; 
+            
             txImageLivre.Text = "";
             cbCategoLivre.Text = "chosir un categorie";
 
@@ -658,7 +673,7 @@ namespace Mediateq_AP_SIO2
             txtTitreLivreEditSupp.Text = "";
             txISBNLivreEditSupp.Text = "";
             txAuteurLivreEditSupp.Text = "";
-            txCollectionLivreEditSupp.Text = "";
+            
             txImageLivreEditSupp.Text = "";
             cbategoLivreEditSupp.Text = "Choisir une categorie";
 
@@ -754,6 +769,12 @@ namespace Mediateq_AP_SIO2
 
         }
 
+     
 
+
+        private void Abonne_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
