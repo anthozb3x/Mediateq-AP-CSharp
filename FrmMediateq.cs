@@ -24,6 +24,9 @@ namespace Mediateq_AP_SIO2
         static List<Dvd> lesDvd;
         static List<collection> lesCollectionsModif;
         static List<collection> lesCollections;
+        static List<TypeAbonnement> lesTypesAbonnements;
+        static List<Abonne> lesAbonnes;
+        static List<Abonne> lesAbonnesModifSupp;
 
         #endregion
 
@@ -39,7 +42,7 @@ namespace Mediateq_AP_SIO2
         {
             // Création de la connexion avec la base de données
             DAOFactory.creerConnection();
-
+            
             // Chargement des objets en mémoire
             lesDescripteurs = DAODocuments.getAllDescripteurs();
             lesTitres = DAOPresse.getAllTitre();
@@ -484,7 +487,7 @@ namespace Mediateq_AP_SIO2
                 }
                 else
                 {
-                    //création de l'objer catégorie en fonction de la categorie choisi dans la combobox
+                    //création de l'objet catégorie en fonction de la categorie choisi dans la combobox
                     Categorie categodvd = (Categorie)cbCategorieDvd.SelectedItem;
 
                     //création du dvd
@@ -653,9 +656,128 @@ namespace Mediateq_AP_SIO2
         }
         #endregion
 
+        #region abonne
+        //-----------------------------------------------------------
+        // ONGLET Abonne 
+        //-----
+        private void tabAbonneEnter(object sender, EventArgs e)
+        {
+
+            MaxDateDateTimePicker();
+            lesAbonnes = DAOAbonne.getAllAbonne();
+            
+
+            //clear du tableu 
+            dtAbonne.Rows.Clear();
+
+            //affichage des abonne dans le tableau 
+            foreach (Abonne abonne in lesAbonnes)
+            {
+                //ajoute au tableau tout les abonne
+                dtAbonne.Rows.Add(abonne.Id,abonne.Nom,abonne.Prenom,abonne.Adresse,abonne.DateNaissance,abonne.AdresseMail,abonne.Telephone,abonne.DatePremierAbo,abonne.DateFinAbo,abonne.TypeAbonnement.Libelle) ;
+                
+
+
+            }
+            // afficher les types d'abo dans la liste déroulante
+            lesTypesAbonnements = DAOAbonne.getAllTypeAbonnement();
+            
+            cbTypeAbonnement.Text = "choisir un type d'abonnement";
+            cbTypeAbonnement.DataSource = lesTypesAbonnements;
+            cbTypeAbonnement.DisplayMember = "libelle";
+
+            cbChoixEditSuppAbonne.DataSource = lesAbonnes;
+            cbChoixEditSuppAbonne.DisplayMember = "AdresseMail";
+
+           
+        }
+
+        /**
+         * Creation abonne
+         * **/
+        private void btnAjouterAbo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                //declaration des variables du form ajouter dvd
+                string idAbonne = tbIdAbonne.Text;
+                string nomAbonne = tbNomAbonne.Text;
+                string prenomAbonne = tbPrenomAbonne.Text;
+                string adresseAbonne = tbAdrAbonne.Text;
+                string dateNaissanceAbonne = dtDateNaissanceAbo.Value.ToString("yyyy-MM-dd");
+                string adresseEmailAbonne = tbMailAbonne.Text;
+                string telephoneAbonne =tbTelephoneAbonne.Text;
+                DateTime dateAbonnement = dtDateAbo.Value;
+  
+                if (AbonneExsiteInCollection(tbIdAbonne.Text) == true)
+                {
+                    string message = "cette id exite deja";
+                    const string caption = "attention";
+                    var result = MessageBox.Show(message, caption,
+                                                 MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    //création de l'objet typeAbonnement en function du type choisi dans la combobox
+                    TypeAbonnement typeAbonnement = (TypeAbonnement)cbTypeAbonnement.SelectedItem;
+
+                    //création de l'abonne
+                    Abonne abo = new Abonne(idAbonne, nomAbonne, prenomAbonne, adresseAbonne,telephoneAbonne,adresseEmailAbonne, dateNaissanceAbonne, dateAbonnement ,dateAbonnement,typeAbonnement);
+
+                    //insert de l'abonne dabs la bdd
+                    DAOAbonne.insertAbonne(abo);
+
+                    //recuper la liste avec le nouveau abonne
+                    lesAbonnes= DAOAbonne.getAllAbonne();
+
+                    dtAbonne.Rows.Clear();
+
+                    //affichage des abonne dans le tableau 
+                    foreach (Abonne abonne in lesAbonnes)
+                    {
+                        
+                        dtAbonne.Rows.Add(abonne.Id, abonne.Nom, abonne.Prenom, abonne.Adresse, abonne.DateNaissance, abonne.AdresseMail, abonne.Telephone, abonne.DatePremierAbo,abonne.DateFinAbo, abonne.TypeAbonnement.Libelle);
+                       
+
+
+                    }
+                    miseAjour();
+                    existeDesAbonne();
+                }
+            }
+            catch (Exception exc)
+            {
+
+
+            }
+
+        }
+        #endregion
+
         //reset des txbox et mise a jour des combo box 
         public void miseAjour()
         {
+            /**
+            * Clear et mise a jour des abonne
+            * **/
+
+            tbIdAbonne.Text="";
+            tbNomAbonne.Text = "";
+            tbPrenomAbonne.Text = "";
+            tbAdrAbonne.Text = "";
+            dtDateNaissanceAbo.Value = DateTime.Today;
+            tbMailAbonne.Text="";
+            tbTelephoneAbonne.Text = "";
+            dtDateAbo.Value = DateTime.Today;
+
+            cbChoixEditSuppAbonne.DataBindings.Clear();
+            cbChoixEditSuppAbonne.DataSource = lesAbonnes;
+            cbChoixEditSuppAbonne.DisplayMember = "AdresseMail";
+
+
+
 
             /**
              * Clear et mise a jour des Livre 
@@ -725,6 +847,32 @@ namespace Mediateq_AP_SIO2
                 btnSuppDVD.Enabled = true;
             }
         }
+        public void existeDesLivre()
+        {
+            if (lesLivres.Count() == 0)
+            {
+                btnLivreEditModif.Enabled = false;
+                btnSuppLivre.Enabled = false;
+            }
+            else
+            {
+                btnLivreEditModif.Enabled = true;
+                btnSuppLivre.Enabled = true;
+            }
+        }
+        public void existeDesAbonne()
+        {
+            if (lesAbonnes.Count() == 0)
+            {
+                btnModifAbonne.Enabled = false;
+                btnSuppAbonne.Enabled = false;
+            }
+            else
+            {
+                btnModifAbonne.Enabled = true;
+                btnSuppAbonne.Enabled = true;
+            }
+        }
 
 
         // permet de verifier si l'id passer en paramette existe pour undvd 
@@ -757,24 +905,35 @@ namespace Mediateq_AP_SIO2
             }
             return resultat;
         }
+        public bool AbonneExsiteInCollection(string idAbonne)
+        {
+            bool resultat = false;
+            foreach (Abonne unAbonne in lesAbonnes)
+            {
+                if (unAbonne.Id == idAbonne)
+                {
+                    resultat = true;
+                }
 
 
+            }
+            return resultat;
+        }
+        public void MaxDateDateTimePicker()
+        {
+            dtDateNaissanceAbo.CustomFormat = "dd MMM yyyy";
+            dtDateAbo.CustomFormat = "dd MMM yyyy";
+            dtDateNaissanceAbo.MaxDate = DateTime.Today;
+            dtDateAbo.MaxDate = DateTime.Today;
+            ModifSuppdtDateNaissanceAbo.MaxDate = DateTime.Today;
+            ModifSuppDateAbo.MaxDate = DateTime.Today;
+
+        }
         private void dtDvd_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
-
-        private void gbEditionSuppDVD_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-     
-
-
-        private void Abonne_Enter(object sender, EventArgs e)
-        {
-
-        }
     }
+
+    
 }

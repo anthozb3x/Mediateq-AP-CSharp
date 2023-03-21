@@ -8,18 +8,20 @@ namespace Mediateq_AP_SIO2.metier
 {
     class Abonne
     {
+        private string id;
         private string nom;
         private string prenom;
         private string adresse;
         private string telephone;
         private string adresseMail;
         private string dateNaissance;
-        private string datePremierAbo;
+        private DateTime datePremierAbo;
         private DateTime dateFinAbo;
         private TypeAbonnement typeAbonnement;
 
-        public Abonne(string nom, string prenom, string adresse, string telephone, string adresseMail, string dateNaissance, string datePremierAbo, DateTime dateFinAbo, TypeAbonnement typeAbonnement)
+        public Abonne(string id, string nom, string prenom, string adresse, string telephone, string adresseMail, string dateNaissance, DateTime datePremierAbo, DateTime dateFinAbo, TypeAbonnement typeAbonnement)
         {
+            this.id = id;
             this.nom = nom;
             this.prenom = prenom;
             this.adresse = adresse;
@@ -38,9 +40,11 @@ namespace Mediateq_AP_SIO2.metier
         public string Telephone { get => telephone; set => telephone = value; }
         public string AdresseMail { get => adresseMail; set => adresseMail = value; }
         public string DateNaissance { get => dateNaissance; set => dateNaissance = value; }
-        public string DatePremierAbo { get => datePremierAbo; set => datePremierAbo = value; }
+        public DateTime DatePremierAbo { get => datePremierAbo; set => datePremierAbo = value; }
         public DateTime DateFinAbo { get => dateFinAbo; set => dateFinAbo = value; }
         public TypeAbonnement TypeAbonnement { get => typeAbonnement; set => typeAbonnement = value; }
+        public string Id { get => id; set => id = value; }
+        
     }
 }
 
