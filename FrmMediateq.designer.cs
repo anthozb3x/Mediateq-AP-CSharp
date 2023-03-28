@@ -175,12 +175,14 @@ namespace Mediateq_AP_SIO2
             this.dateFinAbo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.typeAbo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbChoixEditSuppAbonne = new System.Windows.Forms.ComboBox();
+            this.label46 = new System.Windows.Forms.Label();
             this.cbTypeAboEditSuppAbonne = new System.Windows.Forms.ComboBox();
-            this.ModifSuppDateAbo = new System.Windows.Forms.DateTimePicker();
+            this.dtModifSuppDateAbo = new System.Windows.Forms.DateTimePicker();
             this.label29 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.tbTelephoneEditSuppAbonne = new System.Windows.Forms.TextBox();
-            this.ModifSuppdtDateNaissanceAbo = new System.Windows.Forms.DateTimePicker();
+            this.dtDateNaissanceModifSuppAbo = new System.Windows.Forms.DateTimePicker();
             this.label31 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.tbNomEditSuppAbonne = new System.Windows.Forms.TextBox();
@@ -215,8 +217,6 @@ namespace Mediateq_AP_SIO2
             this.btnAjouterAbo = new System.Windows.Forms.Button();
             this.tbAdrAbonne = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
-            this.cbChoixEditSuppAbonne = new System.Windows.Forms.ComboBox();
-            this.label46 = new System.Windows.Forms.Label();
             this.tabOngletsApplication.SuspendLayout();
             this.tabParutions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParutions)).BeginInit();
@@ -1599,11 +1599,11 @@ namespace Mediateq_AP_SIO2
             this.groupBox3.Controls.Add(this.cbChoixEditSuppAbonne);
             this.groupBox3.Controls.Add(this.label46);
             this.groupBox3.Controls.Add(this.cbTypeAboEditSuppAbonne);
-            this.groupBox3.Controls.Add(this.ModifSuppDateAbo);
+            this.groupBox3.Controls.Add(this.dtModifSuppDateAbo);
             this.groupBox3.Controls.Add(this.label29);
             this.groupBox3.Controls.Add(this.label30);
             this.groupBox3.Controls.Add(this.tbTelephoneEditSuppAbonne);
-            this.groupBox3.Controls.Add(this.ModifSuppdtDateNaissanceAbo);
+            this.groupBox3.Controls.Add(this.dtDateNaissanceModifSuppAbo);
             this.groupBox3.Controls.Add(this.label31);
             this.groupBox3.Controls.Add(this.label32);
             this.groupBox3.Controls.Add(this.tbNomEditSuppAbonne);
@@ -1625,6 +1625,26 @@ namespace Mediateq_AP_SIO2
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Editer / Supprimer un Abonne";
             // 
+            // cbChoixEditSuppAbonne
+            // 
+            this.cbChoixEditSuppAbonne.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbChoixEditSuppAbonne.FormattingEnabled = true;
+            this.cbChoixEditSuppAbonne.Location = new System.Drawing.Point(210, 20);
+            this.cbChoixEditSuppAbonne.Name = "cbChoixEditSuppAbonne";
+            this.cbChoixEditSuppAbonne.Size = new System.Drawing.Size(104, 21);
+            this.cbChoixEditSuppAbonne.TabIndex = 74;
+            this.cbChoixEditSuppAbonne.SelectedIndexChanged += new System.EventHandler(this.cbChoixEditSuppAbonne_SelectedIndexChanged);
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.ImageAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label46.Location = new System.Drawing.Point(106, 23);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(97, 13);
+            this.label46.TabIndex = 73;
+            this.label46.Text = "choisir un abonne :";
+            // 
             // cbTypeAboEditSuppAbonne
             // 
             this.cbTypeAboEditSuppAbonne.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -1634,14 +1654,14 @@ namespace Mediateq_AP_SIO2
             this.cbTypeAboEditSuppAbonne.Size = new System.Drawing.Size(106, 21);
             this.cbTypeAboEditSuppAbonne.TabIndex = 72;
             // 
-            // ModifSuppDateAbo
+            // dtModifSuppDateAbo
             // 
-            this.ModifSuppDateAbo.Location = new System.Drawing.Point(210, 229);
-            this.ModifSuppDateAbo.MaxDate = new System.DateTime(2023, 3, 7, 0, 0, 0, 0);
-            this.ModifSuppDateAbo.Name = "ModifSuppDateAbo";
-            this.ModifSuppDateAbo.Size = new System.Drawing.Size(104, 20);
-            this.ModifSuppDateAbo.TabIndex = 71;
-            this.ModifSuppDateAbo.Value = new System.DateTime(2023, 3, 7, 0, 0, 0, 0);
+            this.dtModifSuppDateAbo.Location = new System.Drawing.Point(210, 229);
+            this.dtModifSuppDateAbo.MaxDate = new System.DateTime(2023, 3, 7, 0, 0, 0, 0);
+            this.dtModifSuppDateAbo.Name = "dtModifSuppDateAbo";
+            this.dtModifSuppDateAbo.Size = new System.Drawing.Size(104, 20);
+            this.dtModifSuppDateAbo.TabIndex = 71;
+            this.dtModifSuppDateAbo.Value = new System.DateTime(2023, 3, 7, 0, 0, 0, 0);
             // 
             // label29
             // 
@@ -1670,14 +1690,14 @@ namespace Mediateq_AP_SIO2
             this.tbTelephoneEditSuppAbonne.Size = new System.Drawing.Size(104, 20);
             this.tbTelephoneEditSuppAbonne.TabIndex = 68;
             // 
-            // ModifSuppdtDateNaissanceAbo
+            // dtDateNaissanceModifSuppAbo
             // 
-            this.ModifSuppdtDateNaissanceAbo.Location = new System.Drawing.Point(210, 151);
-            this.ModifSuppdtDateNaissanceAbo.MaxDate = new System.DateTime(2023, 3, 7, 0, 0, 0, 0);
-            this.ModifSuppdtDateNaissanceAbo.Name = "ModifSuppdtDateNaissanceAbo";
-            this.ModifSuppdtDateNaissanceAbo.Size = new System.Drawing.Size(104, 20);
-            this.ModifSuppdtDateNaissanceAbo.TabIndex = 67;
-            this.ModifSuppdtDateNaissanceAbo.Value = new System.DateTime(2023, 3, 7, 0, 0, 0, 0);
+            this.dtDateNaissanceModifSuppAbo.Location = new System.Drawing.Point(210, 151);
+            this.dtDateNaissanceModifSuppAbo.MaxDate = new System.DateTime(2023, 3, 7, 0, 0, 0, 0);
+            this.dtDateNaissanceModifSuppAbo.Name = "dtDateNaissanceModifSuppAbo";
+            this.dtDateNaissanceModifSuppAbo.Size = new System.Drawing.Size(104, 20);
+            this.dtDateNaissanceModifSuppAbo.TabIndex = 67;
+            this.dtDateNaissanceModifSuppAbo.Value = new System.DateTime(2023, 3, 7, 0, 0, 0, 0);
             // 
             // label31
             // 
@@ -1802,6 +1822,7 @@ namespace Mediateq_AP_SIO2
             this.btnModifAbonne.TabIndex = 22;
             this.btnModifAbonne.Text = "Modifier le Livre";
             this.btnModifAbonne.UseVisualStyleBackColor = true;
+            this.btnModifAbonne.Click += new System.EventHandler(this.btnModifAbonne_Click);
             // 
             // groupBox4
             // 
@@ -2002,25 +2023,6 @@ namespace Mediateq_AP_SIO2
             this.label43.Size = new System.Drawing.Size(140, 13);
             this.label43.TabIndex = 17;
             this.label43.Text = "Saisir l\'adresse de l\'abonne :";
-            // 
-            // cbChoixEditSuppAbonne
-            // 
-            this.cbChoixEditSuppAbonne.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbChoixEditSuppAbonne.FormattingEnabled = true;
-            this.cbChoixEditSuppAbonne.Location = new System.Drawing.Point(210, 20);
-            this.cbChoixEditSuppAbonne.Name = "cbChoixEditSuppAbonne";
-            this.cbChoixEditSuppAbonne.Size = new System.Drawing.Size(104, 21);
-            this.cbChoixEditSuppAbonne.TabIndex = 74;
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.ImageAlign = System.Drawing.ContentAlignment.TopRight;
-            this.label46.Location = new System.Drawing.Point(106, 23);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(97, 13);
-            this.label46.TabIndex = 73;
-            this.label46.Text = "choisir un abonne :";
             // 
             // FrmMediateq
             // 
@@ -2227,11 +2229,11 @@ namespace Mediateq_AP_SIO2
         private System.Windows.Forms.Label label45;
         private System.Windows.Forms.TextBox tbTelephoneAbonne;
         private System.Windows.Forms.ComboBox cbTypeAboEditSuppAbonne;
-        private System.Windows.Forms.DateTimePicker ModifSuppDateAbo;
+        private System.Windows.Forms.DateTimePicker dtModifSuppDateAbo;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.TextBox tbTelephoneEditSuppAbonne;
-        private System.Windows.Forms.DateTimePicker ModifSuppdtDateNaissanceAbo;
+        private System.Windows.Forms.DateTimePicker dtDateNaissanceModifSuppAbo;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TextBox tbNomEditSuppAbonne;

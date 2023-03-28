@@ -25,6 +25,7 @@ namespace Mediateq_AP_SIO2
         static List<collection> lesCollectionsModif;
         static List<collection> lesCollections;
         static List<TypeAbonnement> lesTypesAbonnements;
+        static List<TypeAbonnement> lesTypesAbonnementsModifSupp;
         static List<Abonne> lesAbonnes;
         static List<Abonne> lesAbonnesModifSupp;
 
@@ -46,6 +47,9 @@ namespace Mediateq_AP_SIO2
             // Chargement des objets en mémoire
             lesDescripteurs = DAODocuments.getAllDescripteurs();
             lesTitres = DAOPresse.getAllTitre();
+
+            
+            //tabOngletsApplication.TabPages.Remove(tabDVD);
 
         }
 
@@ -681,6 +685,7 @@ namespace Mediateq_AP_SIO2
             }
             // afficher les types d'abo dans la liste déroulante
             lesTypesAbonnements = DAOAbonne.getAllTypeAbonnement();
+            lesTypesAbonnementsModifSupp = DAOAbonne.getAllTypeAbonnement();
             
             cbTypeAbonnement.Text = "choisir un type d'abonnement";
             cbTypeAbonnement.DataSource = lesTypesAbonnements;
@@ -689,7 +694,12 @@ namespace Mediateq_AP_SIO2
             cbChoixEditSuppAbonne.DataSource = lesAbonnes;
             cbChoixEditSuppAbonne.DisplayMember = "AdresseMail";
 
-           
+            cbTypeAboEditSuppAbonne.Text = "choisir un type d'abonnement";
+            cbTypeAboEditSuppAbonne.DataSource = lesTypesAbonnementsModifSupp;
+            cbTypeAboEditSuppAbonne.DisplayMember = "libelle";
+
+
+
         }
 
         /**
@@ -705,51 +715,136 @@ namespace Mediateq_AP_SIO2
                 string nomAbonne = tbNomAbonne.Text;
                 string prenomAbonne = tbPrenomAbonne.Text;
                 string adresseAbonne = tbAdrAbonne.Text;
-                string dateNaissanceAbonne = dtDateNaissanceAbo.Value.ToString("yyyy-MM-dd");
+                DateTime dateNaissanceAbonne = dtDateNaissanceAbo.Value;
                 string adresseEmailAbonne = tbMailAbonne.Text;
                 string telephoneAbonne =tbTelephoneAbonne.Text;
                 DateTime dateAbonnement = dtDateAbo.Value;
-  
-                if (AbonneExsiteInCollection(tbIdAbonne.Text) == true)
+
+                bool champsRemplis = VerifierChampsVides(idAbonne, nomAbonne, prenomAbonne, adresseAbonne, adresseEmailAbonne, telephoneAbonne);
+                if (champsRemplis)
                 {
-                    string message = "cette id exite deja";
+                    if (AbonneExsiteInCollection(tbIdAbonne.Text) == true)
+                    {
+                        string message = "cette id exite deja";
+                        const string caption = "attention";
+                        var result = MessageBox.Show(message, caption,
+                                                     MessageBoxButtons.OK,
+                                                     MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        //création de l'objet typeAbonnement en function du type choisi dans la combobox
+                        TypeAbonnement typeAbonnement = (TypeAbonnement)cbTypeAbonnement.SelectedItem;
+
+                        //création de l'abonne
+                        Abonne abo = new Abonne(idAbonne, nomAbonne, prenomAbonne, adresseAbonne, telephoneAbonne, adresseEmailAbonne, dateNaissanceAbonne, dateAbonnement, dateAbonnement, typeAbonnement);
+
+                        //insert de l'abonne dabs la bdd
+                        DAOAbonne.insertAbonne(abo);
+
+                        //recuper la liste avec le nouveau abonne
+                        lesAbonnes = DAOAbonne.getAllAbonne();
+
+                        dtAbonne.Rows.Clear();
+
+                        //affichage des abonne dans le tableau 
+                        foreach (Abonne abonne in lesAbonnes)
+                        {
+
+                            dtAbonne.Rows.Add(abonne.Id, abonne.Nom, abonne.Prenom, abonne.Adresse, abonne.DateNaissance, abonne.AdresseMail, abonne.Telephone, abonne.DatePremierAbo, abonne.DateFinAbo, abonne.TypeAbonnement.Libelle);
+
+
+
+                        }
+                        miseAjour();
+                        existeDesAbonne();
+                    }
+
+                }
+                else
+                {
+                    string message = "vous devez remplir tout les champs.";
                     const string caption = "attention";
                     var result = MessageBox.Show(message, caption,
                                                  MessageBoxButtons.OK,
                                                  MessageBoxIcon.Warning);
                 }
-                else
-                {
-                    //création de l'objet typeAbonnement en function du type choisi dans la combobox
-                    TypeAbonnement typeAbonnement = (TypeAbonnement)cbTypeAbonnement.SelectedItem;
-
-                    //création de l'abonne
-                    Abonne abo = new Abonne(idAbonne, nomAbonne, prenomAbonne, adresseAbonne,telephoneAbonne,adresseEmailAbonne, dateNaissanceAbonne, dateAbonnement ,dateAbonnement,typeAbonnement);
-
-                    //insert de l'abonne dabs la bdd
-                    DAOAbonne.insertAbonne(abo);
-
-                    //recuper la liste avec le nouveau abonne
-                    lesAbonnes= DAOAbonne.getAllAbonne();
-
-                    dtAbonne.Rows.Clear();
-
-                    //affichage des abonne dans le tableau 
-                    foreach (Abonne abonne in lesAbonnes)
-                    {
-                        
-                        dtAbonne.Rows.Add(abonne.Id, abonne.Nom, abonne.Prenom, abonne.Adresse, abonne.DateNaissance, abonne.AdresseMail, abonne.Telephone, abonne.DatePremierAbo,abonne.DateFinAbo, abonne.TypeAbonnement.Libelle);
-                       
-
-
-                    }
-                    miseAjour();
-                    existeDesAbonne();
-                }
             }
             catch (Exception exc)
             {
 
+
+            }
+
+        }
+
+        private void cbChoixEditSuppAbonne_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Abonne abonneSelectioner = (Abonne)cbChoixEditSuppAbonne.SelectedItem;
+
+
+            tbIdEditSuppAbonne.Text = abonneSelectioner.Id;
+            tbNomEditSuppAbonne.Text = abonneSelectioner.Nom;
+            tbPrenomEditSuppAbonne.Text = abonneSelectioner.Prenom;
+            tbAddrEditSuppAbonne.Text = abonneSelectioner.Adresse;
+            dtDateNaissanceModifSuppAbo.Value = abonneSelectioner.DateNaissance;
+            tbMailEditSuppAbonne.Text = abonneSelectioner.AdresseMail;
+            tbTelephoneEditSuppAbonne.Text = abonneSelectioner.Telephone;
+            dtModifSuppDateAbo.Value = abonneSelectioner.DatePremierAbo;
+            cbTypeAboEditSuppAbonne.Text = abonneSelectioner.TypeAbonnement.Libelle;
+
+
+
+
+        }
+
+        /**
+         * Modifier un Abonne
+         * **/
+        private void btnModifAbonne_Click(object sender, EventArgs e)
+        {
+            Abonne abonneSelect = (Abonne)cbChoixEditSuppAbonne.SelectedItem;
+            //Waring qui permet de demander si on veut vraiment modifier le dvd
+            string message = "etes vous sur de vouloir modifier l'abonne " + abonneSelect.AdresseMail + " ?";
+            const string caption = "vérification";
+            var result = MessageBox.Show(message, caption,
+                                         MessageBoxButtons.YesNo,
+                                         MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                //creéation des variables avec contenue saisi des tx box
+                string idAbonne = tbIdEditSuppAbonne.Text;
+                string nomAbo = tbNomEditSuppAbonne.Text;
+                string prenomAbo = tbPrenomEditSuppAbonne.Text;
+                string adresseAbo = tbAddrEditSuppAbonne.Text;
+                DateTime dateNaissanceAbo= dtDateNaissanceModifSuppAbo.Value;
+                string MailAbo = tbMailEditSuppAbonne.Text;
+                string telephoneAbo =tbTelephoneEditSuppAbonne.Text;
+                DateTime dateAbonemment = dtModifSuppDateAbo.Value;
+                TypeAbonnement typeAbo = (TypeAbonnement)cbTypeAboEditSuppAbonne.SelectedItem; 
+
+                //création du dvd
+                Abonne abonneModif = new Abonne(idAbonne, nomAbo, prenomAbo, adresseAbo,telephoneAbo, MailAbo, dateNaissanceAbo ,dateAbonemment,dateAbonemment,typeAbo);
+
+                //appel de la fonction modifierDVD qui permet de modifier le dvd passer en parametre
+                DAOAbonne.ModifAbonne(abonneModif);
+
+                //actualisation de la liste lesDvd
+                lesAbonnes = DAOAbonne.getAllAbonne();
+
+                dtAbonne.Rows.Clear();
+
+                //affichage des abonne dans le tableau 
+                foreach (Abonne abonne in lesAbonnes)
+                {
+
+                    dtAbonne.Rows.Add(abonne.Id, abonne.Nom, abonne.Prenom, abonne.Adresse, abonne.DateNaissance, abonne.AdresseMail, abonne.Telephone, abonne.DatePremierAbo, abonne.DateFinAbo, abonne.TypeAbonnement.Libelle);
+
+
+
+                }
+                miseAjour();
 
             }
 
@@ -775,9 +870,6 @@ namespace Mediateq_AP_SIO2
             cbChoixEditSuppAbonne.DataBindings.Clear();
             cbChoixEditSuppAbonne.DataSource = lesAbonnes;
             cbChoixEditSuppAbonne.DisplayMember = "AdresseMail";
-
-
-
 
             /**
              * Clear et mise a jour des Livre 
@@ -921,18 +1013,45 @@ namespace Mediateq_AP_SIO2
         }
         public void MaxDateDateTimePicker()
         {
+            
             dtDateNaissanceAbo.CustomFormat = "dd MMM yyyy";
             dtDateAbo.CustomFormat = "dd MMM yyyy";
+            dtDateNaissanceModifSuppAbo.CustomFormat = "dd MMM yyyy";
+            dtModifSuppDateAbo.CustomFormat = "dd MMM yyyy";
             dtDateNaissanceAbo.MaxDate = DateTime.Today;
             dtDateAbo.MaxDate = DateTime.Today;
-            ModifSuppdtDateNaissanceAbo.MaxDate = DateTime.Today;
-            ModifSuppDateAbo.MaxDate = DateTime.Today;
+            dtDateNaissanceModifSuppAbo.MaxDate = DateTime.Today;
+            dtModifSuppDateAbo.MaxDate = DateTime.Today;
+            dtDateNaissanceAbo.Value = DateTime.Today;
+            dtDateAbo.Value = DateTime.Today;
+            
 
+        }
+
+        
+
+        public bool VerifierChampsVides(params string[] champs)
+        {
+            foreach (string champ in champs)
+            {
+                if (string.IsNullOrEmpty(champ))
+                {
+                    
+                    return false; // Si le champ est vide, renvoie "false".
+                }
+                else if(string.IsNullOrWhiteSpace(champ))
+                {
+                    return false;
+                }
+            }       
+            return true; // Si tous les champs sont remplis, renvoie "true".
         }
         private void dtDvd_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
+
+       
     }
 
     

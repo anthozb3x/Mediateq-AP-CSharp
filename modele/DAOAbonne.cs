@@ -23,12 +23,13 @@ namespace Mediateq_AP_SIO2
 
             while (reader.Read())
             {
+                DateTime dateNaissance = Convert.ToDateTime(reader[6].ToString());
                 DateTime dateAbo = Convert.ToDateTime(reader[7].ToString());
                 
                 DateTime dateFinAbo = Convert.ToDateTime(reader[7].ToString());
                 dateFinAbo = dateFinAbo.AddDays(30);
 
-                Abonne abonne = new Abonne(reader[0].ToString(),reader[1].ToString(), reader[2].ToString(), reader[3].ToString(), reader[4].ToString(), reader[5].ToString(), reader[6].ToString(), dateAbo, dateFinAbo, new TypeAbonnement(reader[8].ToString(), reader[9].ToString()));
+                Abonne abonne = new Abonne(reader[0].ToString(),reader[1].ToString(), reader[2].ToString(), reader[3].ToString(), reader[4].ToString(), reader[5].ToString(), dateNaissance, dateAbo, dateFinAbo, new TypeAbonnement(reader[8].ToString(), reader[9].ToString()));
                 lesAbonnes.Add(abonne);
             }
             DAOFactory.deconnecter();
@@ -61,8 +62,10 @@ namespace Mediateq_AP_SIO2
             try
             {
                 string dateAbo = abonne.DatePremierAbo.ToString("yyyy-MM-dd");
-                
-                string req = "INSERT INTO abonne(id, nom, prenom,adresse,dateNaissance,adresseEmail,numeroTel,mdp,dateAbonnement,idTypeAbonnement) VALUES ('" + abonne.Id + "','" + abonne.Nom + "','" + abonne.Prenom + "','" + abonne.Adresse + "','" + abonne.DateNaissance.ToString() + "','" + abonne.AdresseMail + "','" + abonne.Telephone+ "','" + " " + "','" + dateAbo + "','" + abonne.TypeAbonnement.Id + "')";
+                string dateNaissance = abonne.DateNaissance.ToString("yyyy-MM-dd");
+
+
+                string req = "INSERT INTO abonne(id, nom, prenom,adresse,dateNaissance,adresseEmail,numeroTel,mdp,dateAbonnement,idTypeAbonnement) VALUES ('" + abonne.Id + "','" + abonne.Nom + "','" + abonne.Prenom + "','" + abonne.Adresse + "','" + dateNaissance + "','" + abonne.AdresseMail + "','" + abonne.Telephone+ "','" + " " + "','" + dateAbo + "','" + abonne.TypeAbonnement.Id + "')";
 
                 DAOFactory.connecter();
 
@@ -78,5 +81,29 @@ namespace Mediateq_AP_SIO2
 
 
         }
+
+        public static void ModifAbonne(Abonne abonne)
+        {
+
+            try
+            {
+
+                string dateAbo = abonne.DatePremierAbo.ToString("yyyy-MM-dd");
+                string dateNaissance = abonne.DateNaissance.ToString("yyyy-MM-dd");
+                string req = "UPDATE abonne SET id='" + abonne.Id + "', nom='" + abonne.Nom + "', prenom='" + abonne.Prenom + "',adresse='" + abonne.Adresse + "',dateNaissance='" + dateNaissance + "',adresseEmail='" + abonne.AdresseMail + "',numeroTel='" + abonne.Telephone + "',dateAbonnement='" + dateAbo + "',idTypeAbonnement='" + abonne.TypeAbonnement.Id + "' WHERE id= '" + abonne.Id + "'";
+
+                DAOFactory.connecter();
+                DAOFactory.execSQLWrite(req);
+                DAOFactory.deconnecter();
+
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+
+
+        }
     }
+
 }
