@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Windows.Forms;
 
 namespace Mediateq_AP_SIO2
 {
@@ -27,7 +28,7 @@ namespace Mediateq_AP_SIO2
                 DateTime dateAbo = Convert.ToDateTime(reader[7].ToString());
                 
                 DateTime dateFinAbo = Convert.ToDateTime(reader[7].ToString());
-                dateFinAbo = dateFinAbo.AddDays(30);
+                dateFinAbo = dateFinAbo.AddDays(50);
 
                 Abonne abonne = new Abonne(reader[0].ToString(),reader[1].ToString(), reader[2].ToString(), reader[3].ToString(), reader[4].ToString(), reader[5].ToString(), dateNaissance, dateAbo, dateFinAbo, new TypeAbonnement(reader[8].ToString(), reader[9].ToString()));
                 lesAbonnes.Add(abonne);
@@ -56,7 +57,7 @@ namespace Mediateq_AP_SIO2
 
         }
 
-        public static void insertAbonne(Abonne abonne)
+        public static void InsertAbonne(Abonne abonne)
         {
 
             try
@@ -99,11 +100,36 @@ namespace Mediateq_AP_SIO2
             }
             catch (Exception exc)
             {
+                string message = exc.Message;
+                const string caption = "attention";
+                var result = MessageBox.Show(message, caption,
+                                             MessageBoxButtons.OK,
+                                             MessageBoxIcon.Warning);
                 throw exc;
             }
 
 
         }
+
+
+        public static void SupprimerAbonne(Abonne abonne)
+        {
+            try
+            {
+                string req = "DELETE FROM abonne WHERE id='" + abonne.Id + "'";
+                DAOFactory.connecter();
+                DAOFactory.execSQLWrite(req);
+                DAOFactory.deconnecter();
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+
+            }
+
+            
+        }
+
     }
 
 }

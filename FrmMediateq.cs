@@ -679,10 +679,14 @@ namespace Mediateq_AP_SIO2
             {
                 //ajoute au tableau tout les abonne
                 dtAbonne.Rows.Add(abonne.Id,abonne.Nom,abonne.Prenom,abonne.Adresse,abonne.DateNaissance,abonne.AdresseMail,abonne.Telephone,abonne.DatePremierAbo,abonne.DateFinAbo,abonne.TypeAbonnement.Libelle) ;
+
                 
 
 
+
             }
+
+            VerifierAbonnement();
             // afficher les types d'abo dans la liste déroulante
             lesTypesAbonnements = DAOAbonne.getAllTypeAbonnement();
             lesTypesAbonnementsModifSupp = DAOAbonne.getAllTypeAbonnement();
@@ -697,6 +701,9 @@ namespace Mediateq_AP_SIO2
             cbTypeAboEditSuppAbonne.Text = "choisir un type d'abonnement";
             cbTypeAboEditSuppAbonne.DataSource = lesTypesAbonnementsModifSupp;
             cbTypeAboEditSuppAbonne.DisplayMember = "libelle";
+
+            
+            
 
 
 
@@ -740,7 +747,7 @@ namespace Mediateq_AP_SIO2
                         Abonne abo = new Abonne(idAbonne, nomAbonne, prenomAbonne, adresseAbonne, telephoneAbonne, adresseEmailAbonne, dateNaissanceAbonne, dateAbonnement, dateAbonnement, typeAbonnement);
 
                         //insert de l'abonne dabs la bdd
-                        DAOAbonne.insertAbonne(abo);
+                        DAOAbonne.InsertAbonne(abo);
 
                         //recuper la liste avec le nouveau abonne
                         lesAbonnes = DAOAbonne.getAllAbonne();
@@ -753,11 +760,12 @@ namespace Mediateq_AP_SIO2
 
                             dtAbonne.Rows.Add(abonne.Id, abonne.Nom, abonne.Prenom, abonne.Adresse, abonne.DateNaissance, abonne.AdresseMail, abonne.Telephone, abonne.DatePremierAbo, abonne.DateFinAbo, abonne.TypeAbonnement.Libelle);
 
-
+                            
 
                         }
                         miseAjour();
                         existeDesAbonne();
+                        VerifierAbonnement();
                     }
 
                 }
@@ -840,14 +848,51 @@ namespace Mediateq_AP_SIO2
                 {
 
                     dtAbonne.Rows.Add(abonne.Id, abonne.Nom, abonne.Prenom, abonne.Adresse, abonne.DateNaissance, abonne.AdresseMail, abonne.Telephone, abonne.DatePremierAbo, abonne.DateFinAbo, abonne.TypeAbonnement.Libelle);
-
+                   
 
 
                 }
                 miseAjour();
+                existeDesAbonne();
+                VerifierAbonnement();
+            }
+        }
 
+        /**
+        * supprimer un a
+        * **/
+
+        private void btnSuppAbonne_Click(object sender, EventArgs e)
+        {
+
+            Abonne abonneSelect = (Abonne)cbChoixEditSuppAbonne.SelectedItem;
+
+            string message = "etes vous sur de vouloir modifier l'abonne " + abonneSelect.AdresseMail + " ?";
+            const string caption = "vérification";
+            var result = MessageBox.Show(message, caption,
+                                         MessageBoxButtons.YesNo,
+                                         MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                DAOAbonne.SupprimerAbonne(abonneSelect);
+                lesAbonnes = DAOAbonne.getAllAbonne();
+                dtAbonne.Rows.Clear();
+                //affichage des abonne dans le tableau 
+                foreach (Abonne abonne in lesAbonnes)
+                {
+
+                    dtAbonne.Rows.Add(abonne.Id, abonne.Nom, abonne.Prenom, abonne.Adresse, abonne.DateNaissance, abonne.AdresseMail, abonne.Telephone, abonne.DatePremierAbo, abonne.DateFinAbo, abonne.TypeAbonnement.Libelle);
+                 
+
+
+                }
+                miseAjour();
+                VerifierAbonnement();
             }
 
+            existeDesAbonne();
+            
         }
         #endregion
 
@@ -924,7 +969,6 @@ namespace Mediateq_AP_SIO2
             cbCategoDvdModifSupp.Text = "chosir un categorie";
             cbChoixDvd.Text = "chosir un dvd";
         }
-
         //mets le bouton griser de modif et supp si il existe pas de dvd
         public void existeDesDVD()
         {
@@ -966,7 +1010,6 @@ namespace Mediateq_AP_SIO2
             }
         }
 
-
         // permet de verifier si l'id passer en paramette existe pour undvd 
         public bool dvdExsiteInCollection(string idDVD)
         {
@@ -982,7 +1025,7 @@ namespace Mediateq_AP_SIO2
             }
             return resultat;
         }
-
+        // permet de verifier si l'id passer en paramette existe pour unLivre 
         public bool livreExsiteInCollection(string idLivre)
         {
             bool resultat = false;
@@ -997,6 +1040,7 @@ namespace Mediateq_AP_SIO2
             }
             return resultat;
         }
+        // permet de verifier si l'id passer en paramette existe pour unAbonne
         public bool AbonneExsiteInCollection(string idAbonne)
         {
             bool resultat = false;
@@ -1011,6 +1055,7 @@ namespace Mediateq_AP_SIO2
             }
             return resultat;
         }
+        // permet de mettre les date des datetimepicker a la date d'aujourd'hui + initaliser un format de date
         public void MaxDateDateTimePicker()
         {
             
@@ -1027,9 +1072,7 @@ namespace Mediateq_AP_SIO2
             
 
         }
-
-        
-
+        // permet de vérifier si un formulaire
         public bool VerifierChampsVides(params string[] champs)
         {
             foreach (string champ in champs)
@@ -1046,12 +1089,31 @@ namespace Mediateq_AP_SIO2
             }       
             return true; // Si tous les champs sont remplis, renvoie "true".
         }
-        private void dtDvd_CellContentClick(object sender, DataGridViewCellEventArgs e)
+
+        private void VerifierAbonnement()
         {
 
+            DateTime dateActuelle = DateTime.Today;
+            foreach (DataGridViewRow row in dtAbonne.Rows)
+            {
+                DateTime dateFinAbonnement = Convert.ToDateTime(row.Cells["dateFinAbo"].Value);
+                TimeSpan diff = dateFinAbonnement - dateActuelle;
+                int nbJoursRestants = diff.Days;
+
+                if (nbJoursRestants <= 0)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Red;
+                    MessageBox.Show($"L'abonnement de {row.Cells["nomAbonne"].Value} {row.Cells["prenomAbo"].Value} a expiré !");
+                }
+                else if (nbJoursRestants <= 30)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Orange;
+                    MessageBox.Show($"L'abonnement de {row.Cells["nomAbonne"].Value} {row.Cells["prenomAbo"].Value} expire dans {nbJoursRestants} jours !");
+                }
+            }
         }
 
-       
+
     }
 
     

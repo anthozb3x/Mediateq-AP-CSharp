@@ -892,6 +892,8 @@ namespace Mediateq_AP_SIO2
             // 
             // dtDvd
             // 
+            this.dtDvd.AllowUserToAddRows = false;
+            this.dtDvd.AllowUserToDeleteRows = false;
             this.dtDvd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtDvd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.sysnopsis,
@@ -902,6 +904,7 @@ namespace Mediateq_AP_SIO2
             this.categorieDVD});
             this.dtDvd.Location = new System.Drawing.Point(81, 270);
             this.dtDvd.Name = "dtDvd";
+            this.dtDvd.ReadOnly = true;
             this.dtDvd.Size = new System.Drawing.Size(645, 245);
             this.dtDvd.TabIndex = 1;
             // 
@@ -1106,6 +1109,8 @@ namespace Mediateq_AP_SIO2
             // 
             // dtLivre
             // 
+            this.dtLivre.AllowUserToAddRows = false;
+            this.dtLivre.AllowUserToDeleteRows = false;
             this.dtLivre.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtLivre.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn4,
@@ -1116,6 +1121,7 @@ namespace Mediateq_AP_SIO2
             this.dataGridViewTextBoxColumn6});
             this.dtLivre.Location = new System.Drawing.Point(68, 263);
             this.dtLivre.Name = "dtLivre";
+            this.dtLivre.ReadOnly = true;
             this.dtLivre.Size = new System.Drawing.Size(645, 245);
             this.dtLivre.TabIndex = 6;
             // 
@@ -1513,6 +1519,9 @@ namespace Mediateq_AP_SIO2
             // 
             // dtAbonne
             // 
+            this.dtAbonne.AllowUserToAddRows = false;
+            this.dtAbonne.AllowUserToDeleteRows = false;
+            this.dtAbonne.AllowUserToOrderColumns = true;
             this.dtAbonne.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -1530,6 +1539,7 @@ namespace Mediateq_AP_SIO2
             this.typeAbo});
             this.dtAbonne.Location = new System.Drawing.Point(4, 317);
             this.dtAbonne.Name = "dtAbonne";
+            this.dtAbonne.ReadOnly = true;
             this.dtAbonne.Size = new System.Drawing.Size(780, 245);
             this.dtAbonne.TabIndex = 9;
             // 
@@ -1807,12 +1817,13 @@ namespace Mediateq_AP_SIO2
             // 
             // btnSuppAbonne
             // 
-            this.btnSuppAbonne.Location = new System.Drawing.Point(336, 164);
+            this.btnSuppAbonne.Location = new System.Drawing.Point(327, 170);
             this.btnSuppAbonne.Name = "btnSuppAbonne";
-            this.btnSuppAbonne.Size = new System.Drawing.Size(101, 23);
+            this.btnSuppAbonne.Size = new System.Drawing.Size(118, 23);
             this.btnSuppAbonne.TabIndex = 42;
-            this.btnSuppAbonne.Text = "Supprimer le Livre";
+            this.btnSuppAbonne.Text = "Supprimer un Abonne";
             this.btnSuppAbonne.UseVisualStyleBackColor = true;
+            this.btnSuppAbonne.Click += new System.EventHandler(this.btnSuppAbonne_Click);
             // 
             // btnModifAbonne
             // 
@@ -1820,7 +1831,7 @@ namespace Mediateq_AP_SIO2
             this.btnModifAbonne.Name = "btnModifAbonne";
             this.btnModifAbonne.Size = new System.Drawing.Size(104, 23);
             this.btnModifAbonne.TabIndex = 22;
-            this.btnModifAbonne.Text = "Modifier le Livre";
+            this.btnModifAbonne.Text = "Modifier Abonne";
             this.btnModifAbonne.UseVisualStyleBackColor = true;
             this.btnModifAbonne.Click += new System.EventHandler(this.btnModifAbonne_Click);
             // 
