@@ -416,6 +416,31 @@ namespace Mediateq_AP_SIO2
 
 
         #region DVD
+
+        //-----------------------------------------------------------
+        // ONGLET "Visu dvd" 
+        //-----
+        private void tabPageDVD_Enter(object sender, EventArgs e)
+        {
+
+            lesDvd = DAODocuments.getAllDvd();
+
+            //clear du tableu et de la combo box 
+            dtVisuDvd.Rows.Clear();
+
+
+
+            //affichage des dvd dans le tableau 
+            foreach (Dvd dvd in lesDvd)
+            {
+                //ajoute au tableau tout les dvd
+                dtVisuDvd.Rows.Add(dvd.Synopsis, dvd.Ralisateur, dvd.Duree, dvd.Titre, dvd.Image, dvd.LaCategorie.Libelle);
+                //ajoute a la comboxbox de modif/supp tout les dvd
+
+
+            }
+
+        }
         //-----------------------------------------------------------
         // ONGLET "Ajouter DVD" 
         //-----
@@ -1112,8 +1137,6 @@ namespace Mediateq_AP_SIO2
                 }
             }
         }
-
-
     }
 
     

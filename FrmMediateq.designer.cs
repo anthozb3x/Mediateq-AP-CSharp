@@ -119,7 +119,7 @@ namespace Mediateq_AP_SIO2
             this.lbSynopsisDvd = new System.Windows.Forms.Label();
             this.lbTitreDvd = new System.Windows.Forms.Label();
             this.txTitreDvd = new System.Windows.Forms.TextBox();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPageCrudLivre = new System.Windows.Forms.TabPage();
             this.dtLivre = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -162,7 +162,7 @@ namespace Mediateq_AP_SIO2
             this.btnAjouterAbonne = new System.Windows.Forms.Button();
             this.txAuteurLivre = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPageAbonne = new System.Windows.Forms.TabPage();
             this.dtAbonne = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nomAbonne = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -217,6 +217,15 @@ namespace Mediateq_AP_SIO2
             this.btnAjouterAbo = new System.Windows.Forms.Button();
             this.tbAdrAbonne = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
+            this.tabPageDVD = new System.Windows.Forms.TabPage();
+            this.dtVisuDvd = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lbListeDVD = new System.Windows.Forms.Label();
             this.tabOngletsApplication.SuspendLayout();
             this.tabParutions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParutions)).BeginInit();
@@ -230,24 +239,27 @@ namespace Mediateq_AP_SIO2
             this.gbEditionSuppDVD.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtDvd)).BeginInit();
             this.gbAjoutDVD.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabPageCrudLivre.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtLivre)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabPageAbonne.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtAbonne)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.tabPageDVD.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtVisuDvd)).BeginInit();
             this.SuspendLayout();
             // 
             // tabOngletsApplication
             // 
             this.tabOngletsApplication.Controls.Add(this.tabParutions);
             this.tabOngletsApplication.Controls.Add(this.tabTitres);
+            this.tabOngletsApplication.Controls.Add(this.tabPageCrudLivre);
             this.tabOngletsApplication.Controls.Add(this.tabLivres);
             this.tabOngletsApplication.Controls.Add(this.tabDVD);
-            this.tabOngletsApplication.Controls.Add(this.tabPage1);
-            this.tabOngletsApplication.Controls.Add(this.tabPage2);
+            this.tabOngletsApplication.Controls.Add(this.tabPageDVD);
+            this.tabOngletsApplication.Controls.Add(this.tabPageAbonne);
             this.tabOngletsApplication.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabOngletsApplication.Location = new System.Drawing.Point(0, 0);
             this.tabOngletsApplication.Name = "tabOngletsApplication";
@@ -697,7 +709,7 @@ namespace Mediateq_AP_SIO2
             this.tabDVD.Name = "tabDVD";
             this.tabDVD.Size = new System.Drawing.Size(792, 598);
             this.tabDVD.TabIndex = 3;
-            this.tabDVD.Text = "DVD";
+            this.tabDVD.Text = "DVD Crud";
             this.tabDVD.UseVisualStyleBackColor = true;
             this.tabDVD.Enter += new System.EventHandler(this.tabDVD_Enter);
             // 
@@ -912,31 +924,37 @@ namespace Mediateq_AP_SIO2
             // 
             this.sysnopsis.HeaderText = "synopsis";
             this.sysnopsis.Name = "sysnopsis";
+            this.sysnopsis.ReadOnly = true;
             // 
             // réalisateur
             // 
             this.réalisateur.HeaderText = "réalisateur";
             this.réalisateur.Name = "réalisateur";
+            this.réalisateur.ReadOnly = true;
             // 
             // duree
             // 
             this.duree.HeaderText = "duree";
             this.duree.Name = "duree";
+            this.duree.ReadOnly = true;
             // 
             // titredvd
             // 
             this.titredvd.HeaderText = "titre";
             this.titredvd.Name = "titredvd";
+            this.titredvd.ReadOnly = true;
             // 
             // imageDvd
             // 
             this.imageDvd.HeaderText = "image";
             this.imageDvd.Name = "imageDvd";
+            this.imageDvd.ReadOnly = true;
             // 
             // categorieDVD
             // 
             this.categorieDVD.HeaderText = "Categorie";
             this.categorieDVD.Name = "categorieDVD";
+            this.categorieDVD.ReadOnly = true;
             // 
             // gbAjoutDVD
             // 
@@ -1093,19 +1111,19 @@ namespace Mediateq_AP_SIO2
             this.txTitreDvd.Size = new System.Drawing.Size(100, 20);
             this.txTitreDvd.TabIndex = 13;
             // 
-            // tabPage1
+            // tabPageCrudLivre
             // 
-            this.tabPage1.Controls.Add(this.dtLivre);
-            this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(792, 598);
-            this.tabPage1.TabIndex = 4;
-            this.tabPage1.Text = "Livres Crud";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Enter += new System.EventHandler(this.tabLivresCrud_Enter);
+            this.tabPageCrudLivre.Controls.Add(this.dtLivre);
+            this.tabPageCrudLivre.Controls.Add(this.groupBox2);
+            this.tabPageCrudLivre.Controls.Add(this.groupBox1);
+            this.tabPageCrudLivre.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCrudLivre.Name = "tabPageCrudLivre";
+            this.tabPageCrudLivre.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCrudLivre.Size = new System.Drawing.Size(792, 598);
+            this.tabPageCrudLivre.TabIndex = 4;
+            this.tabPageCrudLivre.Text = "Livres Crud";
+            this.tabPageCrudLivre.UseVisualStyleBackColor = true;
+            this.tabPageCrudLivre.Enter += new System.EventHandler(this.tabLivresCrud_Enter);
             // 
             // dtLivre
             // 
@@ -1129,31 +1147,37 @@ namespace Mediateq_AP_SIO2
             // 
             this.dataGridViewTextBoxColumn4.HeaderText = "titre";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.HeaderText = "ISBN";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.HeaderText = "Auteur";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.HeaderText = "collection";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.HeaderText = "image";
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn6
             // 
             this.dataGridViewTextBoxColumn6.HeaderText = "Categorie";
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
             // 
             // groupBox2
             // 
@@ -1503,19 +1527,19 @@ namespace Mediateq_AP_SIO2
             this.label18.TabIndex = 17;
             this.label18.Text = "Saisir le nom de l\'auteur :";
             // 
-            // tabPage2
+            // tabPageAbonne
             // 
-            this.tabPage2.Controls.Add(this.dtAbonne);
-            this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Controls.Add(this.groupBox4);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(792, 598);
-            this.tabPage2.TabIndex = 5;
-            this.tabPage2.Text = "Abonne";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            this.tabPage2.Enter += new System.EventHandler(this.tabAbonneEnter);
+            this.tabPageAbonne.Controls.Add(this.dtAbonne);
+            this.tabPageAbonne.Controls.Add(this.groupBox3);
+            this.tabPageAbonne.Controls.Add(this.groupBox4);
+            this.tabPageAbonne.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAbonne.Name = "tabPageAbonne";
+            this.tabPageAbonne.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageAbonne.Size = new System.Drawing.Size(792, 598);
+            this.tabPageAbonne.TabIndex = 5;
+            this.tabPageAbonne.Text = "Abonne";
+            this.tabPageAbonne.UseVisualStyleBackColor = true;
+            this.tabPageAbonne.Enter += new System.EventHandler(this.tabAbonneEnter);
             // 
             // dtAbonne
             // 
@@ -2035,6 +2059,83 @@ namespace Mediateq_AP_SIO2
             this.label43.TabIndex = 17;
             this.label43.Text = "Saisir l\'adresse de l\'abonne :";
             // 
+            // tabPageDVD
+            // 
+            this.tabPageDVD.Controls.Add(this.lbListeDVD);
+            this.tabPageDVD.Controls.Add(this.dtVisuDvd);
+            this.tabPageDVD.Location = new System.Drawing.Point(4, 22);
+            this.tabPageDVD.Name = "tabPageDVD";
+            this.tabPageDVD.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDVD.Size = new System.Drawing.Size(792, 598);
+            this.tabPageDVD.TabIndex = 6;
+            this.tabPageDVD.Text = "DVD";
+            this.tabPageDVD.UseVisualStyleBackColor = true;
+            this.tabPageDVD.Enter += new System.EventHandler(this.tabPageDVD_Enter);
+            // 
+            // dtVisuDvd
+            // 
+            this.dtVisuDvd.AllowUserToAddRows = false;
+            this.dtVisuDvd.AllowUserToDeleteRows = false;
+            this.dtVisuDvd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtVisuDvd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn8,
+            this.dataGridViewTextBoxColumn9,
+            this.dataGridViewTextBoxColumn10,
+            this.dataGridViewTextBoxColumn11,
+            this.dataGridViewTextBoxColumn12});
+            this.dtVisuDvd.Location = new System.Drawing.Point(6, 217);
+            this.dtVisuDvd.Name = "dtVisuDvd";
+            this.dtVisuDvd.ReadOnly = true;
+            this.dtVisuDvd.Size = new System.Drawing.Size(781, 299);
+            this.dtVisuDvd.TabIndex = 2;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.HeaderText = "synopsis";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "réalisateur";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.HeaderText = "duree";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            this.dataGridViewTextBoxColumn10.HeaderText = "titre";
+            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            this.dataGridViewTextBoxColumn10.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.HeaderText = "image";
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            this.dataGridViewTextBoxColumn11.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            this.dataGridViewTextBoxColumn12.HeaderText = "Categorie";
+            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            this.dataGridViewTextBoxColumn12.ReadOnly = true;
+            // 
+            // lbListeDVD
+            // 
+            this.lbListeDVD.AutoSize = true;
+            this.lbListeDVD.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbListeDVD.Location = new System.Drawing.Point(6, 189);
+            this.lbListeDVD.Name = "lbListeDVD";
+            this.lbListeDVD.Size = new System.Drawing.Size(138, 25);
+            this.lbListeDVD.TabIndex = 3;
+            this.lbListeDVD.Text = "Liste des dvd :";
+            // 
             // FrmMediateq
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2063,18 +2164,21 @@ namespace Mediateq_AP_SIO2
             ((System.ComponentModel.ISupportInitialize)(this.dtDvd)).EndInit();
             this.gbAjoutDVD.ResumeLayout(false);
             this.gbAjoutDVD.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
+            this.tabPageCrudLivre.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtLivre)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.tabPageAbonne.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtAbonne)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.tabPageDVD.ResumeLayout(false);
+            this.tabPageDVD.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtVisuDvd)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2171,7 +2275,7 @@ namespace Mediateq_AP_SIO2
         private System.Windows.Forms.Label lbTitreDvdEditSup;
         private System.Windows.Forms.TextBox tbTitreDvdModifSupp;
         private System.Windows.Forms.Button btnSuppDVD;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPageCrudLivre;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txIdLivre;
         private System.Windows.Forms.Label label15;
@@ -2214,7 +2318,7 @@ namespace Mediateq_AP_SIO2
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.ComboBox cbCollectionEditSupp;
         private System.Windows.Forms.ComboBox cbCollection;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPageAbonne;
         private System.Windows.Forms.DataGridView dtAbonne;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnSuppAbonne;
@@ -2269,6 +2373,15 @@ namespace Mediateq_AP_SIO2
         private System.Windows.Forms.DataGridViewTextBoxColumn typeAbo;
         private System.Windows.Forms.ComboBox cbChoixEditSuppAbonne;
         private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.TabPage tabPageDVD;
+        private System.Windows.Forms.Label lbListeDVD;
+        private System.Windows.Forms.DataGridView dtVisuDvd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
     }
 }
 
