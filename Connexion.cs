@@ -38,42 +38,81 @@ namespace Mediateq_AP_SIO2
            
 
             string hashmdp = ComputeSha256Hash(mdp);
-            if ( hashmdp == utilisateur.Mdp)
+            bool champsRemplis = VerifierChampsVides(email,mdp);
+            if (champsRemplis)
             {
-                FrmMediateq FrmMediateq = new FrmMediateq();
-                TabControl tabControl = (TabControl)FrmMediateq.Controls["tabOngletsApplication"];
-                TabPage tabPageVisuDVD = tabControl.TabPages["tabPageDVD"];
-                TabPage tabPageCrudDVD = tabControl.TabPages["tabDVD"];
-                TabPage tabPageCrudLire = tabControl.TabPages["tabPageCrudLivre"];
-                TabPage tabPageAbonne = tabControl.TabPages["tabPageAbonne"];
+                if(ExsiteUtilisateur(email))
+                {
+                    if (hashmdp == utilisateur.Mdp)
+                    {
+                        FrmMediateq FrmMediateq = new FrmMediateq();
+                        TabControl tabControl = (TabControl)FrmMediateq.Controls["tabOngletsApplication"];
+                        TabPage tabPageVisuDVD = tabControl.TabPages["tabPageDVD"];
+                        TabPage tabPageCrudDVD = tabControl.TabPages["tabDVD"];
+                        TabPage tabPageCrudLire = tabControl.TabPages["tabPageCrudLivre"];
+                        TabPage tabPageAbonne = tabControl.TabPages["tabPageAbonne"];
+
+
+
+                        if (utilisateur.Service.NomService == "Administratif")
+                        {
+                            tabControl.TabPages.Remove(tabPageAbonne);
+
+                        }
+                        else if (utilisateur.Service.NomService == "Prêts")
+                        {
+                            tabControl.TabPages.Remove(tabPageCrudDVD);
+                            tabControl.TabPages.Remove(tabPageCrudLire);
+                            tabControl.TabPages.Remove(tabPageAbonne);
+
+                        }
+                        else if (utilisateur.Service.NomService == "Culture")
+                        {
+                            tabControl.TabPages.Remove(tabPageCrudDVD);
+                            tabControl.TabPages.Remove(tabPageCrudLire);
+                            tabControl.TabPages.Remove(tabPageAbonne);
+
+                        }
+                        FrmMediateq.Show();
+                        this.Hide();
+
+                    }
+                    else
+                    {
+                        string message = "Erreur de mots de passe ou de l'identifiant veuillez ressayer";
+                        const string caption = "attention";
+                        var result = MessageBox.Show(message, caption,
+                                                     MessageBoxButtons.OK,
+                                                     MessageBoxIcon.Warning);
+                    }
+
+                }
+                else
+                {
+                    string message = "Cette utilisateur n'existe pas ";
+                    const string caption = "Error";
+                    var result = MessageBox.Show(message, caption,
+                                                 MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Error);
+
+                }
                 
 
+            }
+            else
+            {
+                
 
-                if (utilisateur.Service.NomService == "Administratif")
-                {
-                    tabControl.TabPages.Remove(tabPageAbonne);
-                    
-                }
-                else if(utilisateur.Service.NomService == "Prêts")
-                {
-                    tabControl.TabPages.Remove(tabPageCrudDVD);
-                    tabControl.TabPages.Remove(tabPageCrudLire);
-                    tabControl.TabPages.Remove(tabPageAbonne);
-
-                }
-                else if (utilisateur.Service.NomService == "Culture")
-                {
-                    tabControl.TabPages.Remove(tabPageCrudDVD);
-                    tabControl.TabPages.Remove(tabPageCrudLire);
-                    tabControl.TabPages.Remove(tabPageAbonne);
-
-                }
-                FrmMediateq.Show();
-                this.Close();
+                string message = "vous devez remplir tout les champs.";
+                const string caption = "attention";
+                var result = MessageBox.Show(message, caption,
+                                             MessageBoxButtons.OK,
+                                             MessageBoxIcon.Warning);
 
             }
-         
+
         }
+            
 
 
         static string ComputeSha256Hash(string rawData)
@@ -92,6 +131,42 @@ namespace Mediateq_AP_SIO2
                 }
                 return builder.ToString();
             }
+        }
+
+        // permet de vérifier si un formulaire a des champs vides
+        public bool VerifierChampsVides(params string[] champs)
+        {
+            foreach (string champ in champs)
+            {
+                if (string.IsNullOrEmpty(champ))
+                {
+
+                    return false; // Si le champ est vide, renvoie "false".
+                }
+                else if (string.IsNullOrWhiteSpace(champ))
+                {
+                    return false;
+                }
+            }
+            return true; // Si tous les champs sont remplis, renvoie "true".
+        }
+
+
+        //function qui permet de vérifier si l'utilisateur existe
+        public bool ExsiteUtilisateur(string email)
+        {
+            bool existe;
+            Utilisateur utilisateur = DAOUtilisateur.getUtilisateurByMail(email);
+            if(utilisateur == null)
+            {
+                existe = false;
+            }
+            else
+            {
+                existe = true;
+            }
+            return existe;
+
         }
     }
 }

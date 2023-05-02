@@ -1097,7 +1097,7 @@ namespace Mediateq_AP_SIO2
             
 
         }
-        // permet de vérifier si un formulaire
+        // permet de vérifier si un formulaire a des champs vides
         public bool VerifierChampsVides(params string[] champs)
         {
             foreach (string champ in champs)
@@ -1136,6 +1136,14 @@ namespace Mediateq_AP_SIO2
                     MessageBox.Show($"L'abonnement de {row.Cells["nomAbonne"].Value} {row.Cells["prenomAbo"].Value} expire dans {nbJoursRestants} jours !");
                 }
             }
+        }
+
+        private void déconnexionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            Connexion frmConnexion = new Connexion();
+            frmConnexion.Show();
+
         }
     }
 
