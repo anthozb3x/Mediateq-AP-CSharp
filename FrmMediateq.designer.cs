@@ -355,7 +355,7 @@ namespace Mediateq_AP_SIO2
             this.tabTitres.Location = new System.Drawing.Point(4, 22);
             this.tabTitres.Name = "tabTitres";
             this.tabTitres.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTitres.Size = new System.Drawing.Size(792, 598);
+            this.tabTitres.Size = new System.Drawing.Size(788, 571);
             this.tabTitres.TabIndex = 1;
             this.tabTitres.Text = "Titres";
             this.tabTitres.UseVisualStyleBackColor = true;
@@ -441,7 +441,7 @@ namespace Mediateq_AP_SIO2
             this.tabPageCrudLivre.Location = new System.Drawing.Point(4, 22);
             this.tabPageCrudLivre.Name = "tabPageCrudLivre";
             this.tabPageCrudLivre.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCrudLivre.Size = new System.Drawing.Size(792, 598);
+            this.tabPageCrudLivre.Size = new System.Drawing.Size(788, 571);
             this.tabPageCrudLivre.TabIndex = 4;
             this.tabPageCrudLivre.Text = "Livres Crud";
             this.tabPageCrudLivre.UseVisualStyleBackColor = true;
@@ -855,7 +855,7 @@ namespace Mediateq_AP_SIO2
             this.tabLivres.Controls.Add(this.grpRechercheCode);
             this.tabLivres.Location = new System.Drawing.Point(4, 22);
             this.tabLivres.Name = "tabLivres";
-            this.tabLivres.Size = new System.Drawing.Size(792, 598);
+            this.tabLivres.Size = new System.Drawing.Size(788, 571);
             this.tabLivres.TabIndex = 2;
             this.tabLivres.Text = "Livres";
             this.tabLivres.UseVisualStyleBackColor = true;
@@ -1128,7 +1128,7 @@ namespace Mediateq_AP_SIO2
             this.tabDVD.Controls.Add(this.gbAjoutDVD);
             this.tabDVD.Location = new System.Drawing.Point(4, 22);
             this.tabDVD.Name = "tabDVD";
-            this.tabDVD.Size = new System.Drawing.Size(792, 598);
+            this.tabDVD.Size = new System.Drawing.Size(788, 571);
             this.tabDVD.TabIndex = 3;
             this.tabDVD.Text = "DVD Crud";
             this.tabDVD.UseVisualStyleBackColor = true;
@@ -1539,7 +1539,7 @@ namespace Mediateq_AP_SIO2
             this.tabPageDVD.Location = new System.Drawing.Point(4, 22);
             this.tabPageDVD.Name = "tabPageDVD";
             this.tabPageDVD.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDVD.Size = new System.Drawing.Size(792, 598);
+            this.tabPageDVD.Size = new System.Drawing.Size(788, 571);
             this.tabPageDVD.TabIndex = 6;
             this.tabPageDVD.Text = "DVD";
             this.tabPageDVD.UseVisualStyleBackColor = true;
@@ -1617,7 +1617,7 @@ namespace Mediateq_AP_SIO2
             this.tabPageAbonne.Location = new System.Drawing.Point(4, 22);
             this.tabPageAbonne.Name = "tabPageAbonne";
             this.tabPageAbonne.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageAbonne.Size = new System.Drawing.Size(792, 598);
+            this.tabPageAbonne.Size = new System.Drawing.Size(788, 571);
             this.tabPageAbonne.TabIndex = 5;
             this.tabPageAbonne.Text = "Abonne";
             this.tabPageAbonne.UseVisualStyleBackColor = true;

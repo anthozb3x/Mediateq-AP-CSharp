@@ -8,10 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Mediateq_AP_SIO2.metier;
+using Mediateq_AP_SIO2.modele;
 
 
 namespace Mediateq_AP_SIO2
 {
+    /// <summary>
+    /// Form Principal 
+    /// </summary>
     public partial class FrmMediateq : Form
     {
         #region Variables globales
@@ -932,10 +936,10 @@ namespace Mediateq_AP_SIO2
             tbNomAbonne.Text = "";
             tbPrenomAbonne.Text = "";
             tbAdrAbonne.Text = "";
-            dtDateNaissanceAbo.Value = DateTime.Today;
+            
             tbMailAbonne.Text="";
             tbTelephoneAbonne.Text = "";
-            dtDateAbo.Value = DateTime.Today;
+            
 
             cbChoixEditSuppAbonne.DataBindings.Clear();
             cbChoixEditSuppAbonne.DataSource = lesAbonnes;
@@ -1035,7 +1039,12 @@ namespace Mediateq_AP_SIO2
             }
         }
 
-        // permet de verifier si l'id passer en paramette existe pour undvd 
+
+        /// <summary>
+        /// permet de verifier si l'id passer en paramette existe pour undvd 
+        /// </summary>
+        /// <param name="idDVD">Id du dvd a vérifier</param>
+        /// <returns>true si il existe et false si il existe pas </returns>
         public bool dvdExsiteInCollection(string idDVD)
         {
               bool resultat = false;
@@ -1050,7 +1059,11 @@ namespace Mediateq_AP_SIO2
             }
             return resultat;
         }
-        // permet de verifier si l'id passer en paramette existe pour unLivre 
+        /// <summary>
+        /// permet de verifier si l'id passer en paramette existe pour un livre 
+        /// </summary>
+        /// <param name="idLivre">Id du livre a vérifier</param>
+        /// <returns>true si il existe et false si il existe pas </returns>
         public bool livreExsiteInCollection(string idLivre)
         {
             bool resultat = false;
@@ -1065,7 +1078,12 @@ namespace Mediateq_AP_SIO2
             }
             return resultat;
         }
-        // permet de verifier si l'id passer en paramette existe pour unAbonne
+
+        /// <summary>
+        /// permet de verifier si l'id passer en paramette existe pour un abonne 
+        /// </summary>
+        /// <param name="idAbonne">Id de l'abonne a vérifier</param>
+        /// <returns>true si il existe et false si il existe pas </returns>
         public bool AbonneExsiteInCollection(string idAbonne)
         {
             bool resultat = false;
@@ -1080,7 +1098,10 @@ namespace Mediateq_AP_SIO2
             }
             return resultat;
         }
-        // permet de mettre les date des datetimepicker a la date d'aujourd'hui + initaliser un format de date
+
+        /// <summary>
+        /// permet de mettre les date des datetimepicker a la date d'aujourd'hui + initaliser un format de date
+        /// </summary>
         public void MaxDateDateTimePicker()
         {
             
@@ -1097,7 +1118,12 @@ namespace Mediateq_AP_SIO2
             
 
         }
-        // permet de vérifier si un formulaire a des champs vides
+        /// <summary>
+        /// permet de vérifier si un formulaire a des champs vides 
+        /// </summary>
+        /// <param name="champs"></param>
+        /// <returns>Si tous les champs sont remplis, renvoie "true" sinon "false"</returns>
+
         public bool VerifierChampsVides(params string[] champs)
         {
             foreach (string champ in champs)
@@ -1115,6 +1141,9 @@ namespace Mediateq_AP_SIO2
             return true; // Si tous les champs sont remplis, renvoie "true".
         }
 
+        /// <summary>
+        /// Verifie si l'abonnement n'est pas encore expiré ou exprire bientot 
+        /// </summary>
         private void VerifierAbonnement()
         {
 
@@ -1137,6 +1166,7 @@ namespace Mediateq_AP_SIO2
                 }
             }
         }
+
 
         private void déconnexionToolStripMenuItem_Click(object sender, EventArgs e)
         {

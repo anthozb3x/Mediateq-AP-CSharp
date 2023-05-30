@@ -9,9 +9,15 @@ using System.Threading.Tasks;
 
 namespace Mediateq_AP_SIO2.modele
 {
+    /// <summary>
+    /// Classe représentant le Data Access Object (DAO) pour la gestion des Utilisateur du logiciel.
+    /// </summary>
     class DAOUtilisateur
     {
-
+        /// <summary>
+        /// Récupère tous les utilisateurs.
+        /// </summary>
+        /// <returns>Une liste des utilisateurs.</returns>
         public static List<Utilisateur> getUtilisateur()
         {
 
@@ -35,9 +41,12 @@ namespace Mediateq_AP_SIO2.modele
 
         }
 
-      
 
-
+        /// <summary>
+        /// Récupère un utilisateur en fonction de son adresse e-mail.
+        /// </summary>
+        /// <param name="mail">L'adresse e-mail de l'utilisateur.</param>
+        /// <returns>L'utilisateur correspondant à l'adresse e-mail spécifiée, ou null s'il n'existe pas.</returns>
         public static Utilisateur getUtilisateurByMail(string mail)
         {
             Utilisateur utilisateur = null;
@@ -61,6 +70,10 @@ namespace Mediateq_AP_SIO2.modele
         }
 
 
+        /// <summary>
+        /// Récupère tous les services.
+        /// </summary>
+        /// <returns>Une liste des services.</returns>
         public static List<Service> getAllService()
         {
             List<Service> services = new List<Service>();

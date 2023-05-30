@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using Mediateq_AP_SIO2.metier;
 
-namespace Mediateq_AP_SIO2
+namespace Mediateq_AP_SIO2.modele
 {
+    /// <summary>
+    /// Classe représentant le Data Access Object (DAO) pour la gestion presse.
+    /// </summary>
     class DAOPresse
     {
         /*public static List<Domaine> getAllDomaines()
@@ -71,7 +74,10 @@ namespace Mediateq_AP_SIO2
             return domaine;
         }
         */
-
+        /// <summary>
+        /// Récupère tous les titres de revues.
+        /// </summary>
+        /// <returns>Une liste des titres de revues.</returns>
         public static List<Revue> getAllTitre()
         {
             List<Revue> lesTitres = new List<Revue>();
@@ -90,7 +96,11 @@ namespace Mediateq_AP_SIO2
 
             return lesTitres;
         }
-        
+        /// <summary>
+        /// Récupère toutes les parutions d'un titre de revue.
+        /// </summary>
+        /// <param name="pTitre">Le titre de revue.</param>
+        /// <returns>Une liste des parutions du titre de revue spécifié.</returns>
         public static List<Parution> getParutionByTitre(Revue pTitre)
         {
             List<Parution> lesParutions = new List<Parution>();

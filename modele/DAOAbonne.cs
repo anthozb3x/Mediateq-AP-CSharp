@@ -9,10 +9,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace Mediateq_AP_SIO2
+namespace Mediateq_AP_SIO2.modele
 {
+    /// <summary>
+    /// Classe représentant le Data Access Object (DAO) pour la gestion des abonnés.
+    /// </summary>
     class DAOAbonne
     {
+        /// <summary>
+        /// Récupère tous les abonnés.
+        /// </summary>
+        /// <returns>Une liste d'objets Abonne représentant tous les abonnés.</returns>
         public static List<Abonne> getAllAbonne() 
         {
             List<Abonne> lesAbonnes = new List<Abonne>();
@@ -38,6 +45,11 @@ namespace Mediateq_AP_SIO2
 
         }
 
+
+        /// <summary>
+        /// Récupère tous les types d'abonnement.
+        /// </summary>
+        /// <returns>Une liste d'objets TypeAbonnement représentant tous les types d'abonnement.</returns>
         public static List<TypeAbonnement> getAllTypeAbonnement()
         {
             List<TypeAbonnement> lesTypesAbonnement = new List<TypeAbonnement>();
@@ -56,7 +68,10 @@ namespace Mediateq_AP_SIO2
             return lesTypesAbonnement;
 
         }
-
+        /// <summary>
+        /// Insère un nouvel abonné.
+        /// </summary>
+        /// <param name="abonne">L'objet Abonne à insérer.</param>
         public static void InsertAbonne(Abonne abonne)
         {
 
@@ -82,7 +97,10 @@ namespace Mediateq_AP_SIO2
 
 
         }
-
+        /// <summary>
+        /// Modifie les informations d'un abonné.
+        /// </summary>
+        /// <param name="abonne">L'objet Abonne à modifier.</param>
         public static void ModifAbonne(Abonne abonne)
         {
 
@@ -111,7 +129,10 @@ namespace Mediateq_AP_SIO2
 
         }
 
-
+        /// <summary>
+        /// Supprime un abonné.
+        /// </summary>
+        /// <param name="abonne">L'objet Abonne à supprimer.</param>
         public static void SupprimerAbonne(Abonne abonne)
         {
             try

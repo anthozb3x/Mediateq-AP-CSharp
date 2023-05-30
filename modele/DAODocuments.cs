@@ -6,10 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mediateq_AP_SIO2
+namespace Mediateq_AP_SIO2.modele
 {
+    /// <summary>
+    /// Classe représentant le Data Access Object (DAO) pour la gestion des documents.
+    /// </summary>
     class DAODocuments
     {
+        /// <summary>
+        /// Récupère toutes les catégories de documents.
+        /// </summary>
+        /// <returns>Une liste d'objets Categorie représentant toutes les catégories de documents.</returns>
         public static List<Categorie> getAllCategories()
         {
             List<Categorie> lesCategories = new List<Categorie>();
@@ -28,7 +35,10 @@ namespace Mediateq_AP_SIO2
             return lesCategories;
         }
 
-
+        /// <summary>
+        /// Récupère toutes les collections de documents.
+        /// </summary>
+        /// <returns>Une liste d'objets collection représentant toutes les collections de documents.</returns>
         public static List<collection> getAllCollection()
         {
             List<collection> lesCollection= new List<collection>();
@@ -46,7 +56,10 @@ namespace Mediateq_AP_SIO2
             DAOFactory.deconnecter();
             return lesCollection;
         }
-
+        /// <summary>
+        /// Récupère tous les descripteurs de documents.
+        /// </summary>
+        /// <returns>Une liste d'objets Descripteur représentant tous les descripteurs de documents.</returns>
         public static List<Descripteur> getAllDescripteurs()
         {
             List<Descripteur> lesDescripteurs = new List<Descripteur>();
@@ -64,7 +77,11 @@ namespace Mediateq_AP_SIO2
             DAOFactory.deconnecter();
             return lesDescripteurs;
         }
-        
+
+        /// <summary>
+        /// Récupère tous les livres.
+        /// </summary>
+        /// <returns>Une liste d'objets Livre représentant tous les livres.</returns>
         public static List<Livre> getAllLivres()
         {
             List<Livre> lesLivres = new List<Livre>();
@@ -92,6 +109,10 @@ namespace Mediateq_AP_SIO2
             return lesLivres;
         }
 
+        /// <summary>
+        /// Récupère les descripteurs d'un livre.
+        /// </summary>
+        /// <param name="lesLivres">Une liste d'objets Livre pour lesquels on souhaite récupérer les descripteurs.</param>
         public static void setDescripteurs(List<Livre> lesLivres)
         {
             DAOFactory.connecter();
@@ -113,6 +134,11 @@ namespace Mediateq_AP_SIO2
             DAOFactory.deconnecter();
         }
 
+        /// <summary>
+        /// Récupère la catégorie d'un livre.
+        /// </summary>
+        /// <param name="pLivre">Un objet Livre pour lequel on souhaite récupérer la catégorie.</param>
+        /// <returns>Un objet Categorie représentant la catégorie du livre.</returns>
         public static Categorie getCategorieByLivre(Livre pLivre)
         {
             Categorie categorie;
@@ -136,7 +162,10 @@ namespace Mediateq_AP_SIO2
         }
 
 
-        //renvoie une list de tout les dvd
+        /// <summary>
+        /// Récupère tous les DVD.
+        /// </summary>
+        /// <returns>Une liste d'objets Dvd représentant tous les DVD.</returns>
         public static List<Dvd> getAllDvd()
         {
             List<Dvd> lesDvd = new List<Dvd>();
@@ -172,7 +201,10 @@ namespace Mediateq_AP_SIO2
 
         }
 
-        // insert un livre dans la bdd
+        /// <summary>
+        /// Insère un livre dans la base de données.
+        /// </summary>
+        /// <param name="livre">L'objet Livre à insérer.</param>
         public static void insertLivre(Livre livre)
         {
 
@@ -196,7 +228,11 @@ namespace Mediateq_AP_SIO2
 
 
         }
-        //Modifier un livre
+
+        /// <summary>
+        /// Modifie un livre dans la base de données.
+        /// </summary>
+        /// <param name="livre">L'objet Livre à modifier.</param>
         public static void ModifierLivre(Livre livre)
         {
 
@@ -222,7 +258,10 @@ namespace Mediateq_AP_SIO2
 
         }
 
-        //inserer un dvd dans la bdd
+        /// <summary>
+        /// Insère un DVD dans la base de données.
+        /// </summary>
+        /// <param name="dvd">L'objet Dvd à insérer.</param>
         public static void insertDvd(Dvd dvd)
         {
 
@@ -246,7 +285,10 @@ namespace Mediateq_AP_SIO2
 
 
         }
-        //suprimmer un livre
+        /// <summary>
+        /// Supprime un livre de la base de données.
+        /// </summary>
+        /// <param name="livre">L'objet Livre à supprimer.</param>
         public static void SupprimerLivre(Livre livre)
         {
 
@@ -273,7 +315,10 @@ namespace Mediateq_AP_SIO2
 
         }
 
-        //Mofifier un dvd
+        /// <summary>
+        /// Modifie un DVD dans la base de données.
+        /// </summary>
+        /// <param name="dvd">L'objet Dvd à modifier.</param>
         public static void ModifierDvd(Dvd dvd)
         {
 
@@ -299,7 +344,10 @@ namespace Mediateq_AP_SIO2
 
         }
 
-        //Supprimer un DVD
+        /// <summary>
+        /// Supprime un DVD de la base de données.
+        /// </summary>
+        /// <param name="dvd">L'objet Dvd à supprimer.</param>
         public static void SupprimerDvd(Dvd dvd)
         {
 
