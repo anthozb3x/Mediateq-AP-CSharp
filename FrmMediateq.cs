@@ -509,7 +509,7 @@ namespace Mediateq_AP_SIO2
                 string imageDvd = txImageDvd.Text;
 
  
-                if (dvdExsiteInCollection(txIddvd.Text) == true)
+                if (dvdExsiteInCollection(txIddvd.Text) == true || livreExsiteInCollection(txIddvd.Text)== true)
                 {
                     string message = "cette id exite deja";
                     const string caption = "attention";
