@@ -4,10 +4,16 @@ using Mediateq_AP_SIO2.divers;
 
 namespace Mediateq_AP_SIO2
 {
+    /// <summary>
+    /// Classe représentant une fabrique de DAO.
+    /// </summary>
     class DAOFactory
     {
         private static MySqlConnection connexion;
 
+        /// <summary>
+        /// Crée une connexion à la base de données.
+        /// </summary>
         public static void creerConnection()
         {
             string serverIp = "127.0.0.1";
@@ -25,9 +31,11 @@ namespace Mediateq_AP_SIO2
             {
                 throw new ExceptionSio(1, "problème création connexion BDD", e.Message);
             }
-
         }
 
+        /// <summary>
+        /// Établit la connexion à la base de données.
+        /// </summary>
         public static void connecter()
         {
             try
@@ -40,13 +48,19 @@ namespace Mediateq_AP_SIO2
             }
         }
 
+        /// <summary>
+        /// Ferme la connexion à la base de données.
+        /// </summary>
         public static void deconnecter()
         {
             connexion.Close();
         }
 
-
-        // Exécution d'une requête de lecture ; retourne un Datareader
+        /// <summary>
+        /// Exécute une requête de lecture et retourne un DataReader.
+        /// </summary>
+        /// <param name="requete">La requête SQL à exécuter.</param>
+        /// <returns>Un DataReader contenant les résultats de la requête.</returns>
         public static MySqlDataReader execSQLRead(string requete)
         {
             MySqlCommand command;
@@ -69,14 +83,15 @@ namespace Mediateq_AP_SIO2
                 throw new ExceptionSio(1, "Erreur lecture BDD", e.Message);
             }
 
-
             return dataReader;
         }
 
-        // Exécution d'une requete d'écriture (Insert ou Update) ; ne retourne rien
+        /// <summary>
+        /// Exécute une requête d'écriture (Insert ou Update).
+        /// </summary>
+        /// <param name="requete">La requête SQL à exécuter.</param>
         public static void execSQLWrite(string requete)
         {
-
             MySqlCommand command;
             command = new MySqlCommand();
             command.CommandText = requete;
@@ -89,7 +104,6 @@ namespace Mediateq_AP_SIO2
             {
                 throw new ExceptionSio(1, "Erreur écriture BDD", e.Message);
             }
-            
         }
     }
 }

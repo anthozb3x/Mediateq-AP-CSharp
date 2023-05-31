@@ -14,6 +14,9 @@ using System.Security.Cryptography;
 
 namespace Mediateq_AP_SIO2
 {
+    /// <summary>
+    /// Form de connexion
+    /// </summary>
     public partial class Connexion : Form
     {
         public Connexion()
@@ -27,7 +30,9 @@ namespace Mediateq_AP_SIO2
             
 
         }
-
+        /// <summary>
+        /// Bouton de connexion 
+        /// </summary>
         private void btnConnexion_Click(object sender, EventArgs e)
         {
             string email = txbEmailCo.Text;
@@ -73,8 +78,9 @@ namespace Mediateq_AP_SIO2
                             tabControl.TabPages.Remove(tabPageAbonne);
 
                         }
-                        FrmMediateq.Show();
                         this.Hide();
+                        FrmMediateq.Show();
+                        
 
                     }
                     else
@@ -114,7 +120,11 @@ namespace Mediateq_AP_SIO2
         }
             
 
-
+        /// <summary>
+        /// Fonction qui permet de hasher une chaine de carratères en SHA256
+        /// </summary>
+        /// <param name="rawData">texte a hasher</param>
+        /// <returns>retourne un String </returns>
         static string ComputeSha256Hash(string rawData)
         {
             // Create a SHA256   
@@ -133,6 +143,11 @@ namespace Mediateq_AP_SIO2
             }
         }
 
+        /// <summary>
+        /// Fonction qui permet de vérifier si un formulaire a des champs vides
+        /// </summary>
+        /// <param name="champs"> Tableau de formulaire</param>
+        /// <returns>retourne un boolean</returns>
         // permet de vérifier si un formulaire a des champs vides
         public bool VerifierChampsVides(params string[] champs)
         {
@@ -150,9 +165,11 @@ namespace Mediateq_AP_SIO2
             }
             return true; // Si tous les champs sont remplis, renvoie "true".
         }
-
-
-        //function qui permet de vérifier si l'utilisateur existe
+        /// <summary>
+        /// Fonction qui vérifie si l'email entrer en paramètre existe 
+        /// </summary>
+        /// <param name="email"> String email</param>
+        /// <returns>un variable boolean</returns>
         public bool ExsiteUtilisateur(string email)
         {
             bool existe;
